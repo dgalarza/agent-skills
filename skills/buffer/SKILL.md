@@ -1,7 +1,7 @@
 ---
 name: buffer
 description: Interface with the Buffer social media scheduling API. Use this skill when the user wants to schedule social media posts, check their queue, list channels, create ideas, or manage their Buffer account.
-allowed-tools: Bash(curl:*), Bash(cat:*)
+allowed-tools: Bash(curl:*), Bash(cat:*), Bash(jq:*)
 ---
 
 # Buffer Social Media Scheduling
@@ -253,6 +253,40 @@ If the user specifies a service (e.g., "post to Twitter"), match it against the 
 1. **Get organizations** → extract `organizationId`
 2. Help the user draft idea content
 3. **Create idea** with title, text, tags, and target services
+
+## Schema Introspection
+
+Before attempting a mutation or querying a field you're unsure about, introspect the schema first. Don't guess — the API surface is limited.
+
+**List all available mutations:**
+
+```bash
+curl -s -X POST https://api.buffer.com \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $BUFFER_API_TOKEN" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d '{"query": "{ __schema { mutationType { fields { name } } } }"}' | jq '[.data.__schema.mutationType.fields[].name]'
+```
+
+**List all available queries:**
+
+```bash
+curl -s -X POST https://api.buffer.com \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $BUFFER_API_TOKEN" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d '{"query": "{ __schema { queryType { fields { name } } } }"}' | jq '[.data.__schema.queryType.fields[].name]'
+```
+
+**Inspect fields on a specific type:**
+
+```bash
+curl -s -X POST https://api.buffer.com \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $BUFFER_API_TOKEN" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d '{"query": "{ __type(name: \"<TYPE_NAME>\") { fields { name type { name kind } } } }"}' | jq '.data.__type.fields[]'
+```
 
 ## Error Handling
 
