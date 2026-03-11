@@ -51,7 +51,7 @@ Complete type definitions for the Buffer GraphQL API at `https://api.buffer.com`
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `field` | String | Yes | Field to sort by (e.g., `dueAt`, `createdAt`) |
-| `direction` | String | Yes | Sort direction: `ASC` or `DESC` |
+| `direction` | String | Yes | Sort direction: `asc` or `desc` (lowercase) |
 
 ### ChannelsInput
 
@@ -64,7 +64,7 @@ Complete type definitions for the Buffer GraphQL API at `https://api.buffer.com`
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `organizationId` | String | Yes | Organization ID to create idea in |
-| `content` | [IdeaContentInput] | Yes | Array of idea content items |
+| `content` | IdeaContentInput | Yes | Idea content object |
 
 ### IdeaContentInput
 
@@ -72,7 +72,7 @@ Complete type definitions for the Buffer GraphQL API at `https://api.buffer.com`
 |-------|------|----------|-------------|
 | `title` | String | No | Short title for the idea |
 | `text` | String | No | Full idea content or draft text |
-| `tags` | [String] | No | Tags for categorizing the idea |
+| `tags` | [TagInput] | No | Existing tag objects (with `id` and `color` fields) — fetch tags first |
 | `services` | [String] | No | Target social media services |
 
 ## Enums
@@ -84,7 +84,7 @@ Complete type definitions for the Buffer GraphQL API at `https://api.buffer.com`
 | `addToQueue` | Add post to the end of the scheduling queue |
 | `shareNow` | Publish the post immediately |
 | `shareNext` | Add post to the front of the queue (next to be published) |
-| `customSchedule` | Schedule for a specific date/time (requires `dueAt`) |
+| `customSchedule` | Schedule for a specific date/time (requires `dueAt` field) |
 | `recommendedTime` | Use Buffer's recommended optimal posting time |
 
 ### SchedulingType
