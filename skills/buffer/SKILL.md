@@ -1,6 +1,6 @@
 ---
 name: buffer
-description: Interface with the Buffer social media scheduling API. Use this skill when the user wants to schedule social media posts, check their queue, list channels, create ideas, or manage their Buffer account.
+description: This skill should be used when interfacing with the Buffer social media scheduling API. It handles scheduling social media posts, checking the queue, listing channels, creating ideas, and managing Buffer accounts.
 allowed-tools: Bash(curl:*), Bash(cat:*), Bash(jq:*)
 ---
 
@@ -120,19 +120,7 @@ curl -s -X POST https://api.buffer.com \
   -d @/tmp/buffer_payload.json | jq .
 ```
 
-### Filter Options
-
-- **status**: `scheduled`, `sent`, `draft`, `error`, `needs_approval`, `sending`
-- **channelIds**: Array of channel IDs to filter by
-- **startDate** / **endDate**: ISO 8601 date strings for date range filtering
-
-### Pagination
-
-Uses Relay-style cursor pagination:
-- `limit`: Number of results to return (default 20)
-- `after`: Cursor from `pageInfo.endCursor` to get next page
-
-**Note:** Sort direction values are lowercase: `asc` or `desc`. Valid sort fields: `dueAt`, `createdAt`.
+For available filter fields (status, channelIds, date range), sort options, and pagination details, refer to `references/api-reference.md`.
 
 ## Mode: Create Text Post
 
@@ -157,13 +145,10 @@ curl -s -X POST https://api.buffer.com \
 ### Scheduling Options
 
 - **schedulingType**: `automatic` (Buffer picks time) or `notification` (sends reminder)
-- **mode**: Controls when the post is published:
-  - `addToQueue` — Add to the end of the queue
-  - `shareNow` — Publish immediately
-  - `shareNext` — Add to the front of the queue
-  - `customScheduled` — Schedule for a specific time (requires `dueAt`)
-  - `recommendedTime` — Use Buffer's recommended optimal time
-- **dueAt** (String): ISO 8601 datetime, required when mode is `customScheduled`. Example: `"2026-03-15T14:00:00Z"`
+- **mode**: Controls when the post is published (e.g., `addToQueue`, `shareNow`, `shareNext`, `customSchedule`, `recommendedTime`)
+- **dueAt** (String): ISO 8601 datetime, required when mode is `customSchedule`. Example: `"2026-03-15T14:00:00Z"`
+
+For full field definitions and enum values, refer to `references/api-reference.md`.
 
 ### Response Handling
 
@@ -211,12 +196,9 @@ curl -s -X POST https://api.buffer.com \
   -d @/tmp/buffer_payload.json | jq .
 ```
 
-### IdeaContentInput Fields
+For `IdeaContentInput` field details (title, text, services, tags), refer to `references/api-reference.md`.
 
-- **title** (String): Short title for the idea
-- **text** (String): Full idea content/draft text
-- **services** ([String]): Target services (e.g., `twitter`, `instagram`, `linkedin`, `facebook`)
-- **tags** ([TagInput]): Optional. Requires existing tag objects with `id` and `color` fields — fetch existing tags first before using.
+**Note:** Tags require existing tag objects with `id` and `color` fields — fetch existing tags first before using.
 
 ## Mode: Get Account
 
@@ -245,7 +227,7 @@ If the user specifies a service (e.g., "post to Twitter"), match it against the 
 ### Check the Queue
 
 1. **Get organizations** → extract `organizationId`
-2. **Get posts** with `filter: { status: "scheduled" }` and `sort: { field: "dueAt", direction: "ASC" }`
+2. **Get posts** with `filter: { status: "scheduled" }` and `sort: { field: "dueAt", direction: "asc" }`
 3. Display posts grouped by date with channel info
 
 ### Brainstorm and Save Ideas
