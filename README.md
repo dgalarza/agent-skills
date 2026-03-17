@@ -19,6 +19,7 @@ npx skills add dgalarza/agent-skills
 | Skill | Description |
 |-------|-------------|
 | [Buffer](skills/buffer/) | Schedule posts, manage queues, and save ideas via the Buffer social media API |
+| [Buttondown](skills/buttondown/) | Manage tags, automations, subscribers, and emails via the Buttondown newsletter API |
 
 ---
 
@@ -35,6 +36,22 @@ export BUFFER_API_TOKEN=your_token_here
 ```
 
 See the [Buffer API documentation](https://buffer.com/developers/api) for full API reference.
+
+---
+
+## Buttondown
+
+```bash
+npx skills add dgalarza/agent-skills --skill buttondown
+```
+
+Requires a `BUTTONDOWN_API_KEY` environment variable. Generate one at [buttondown.com/requests](https://buttondown.com/requests).
+
+```bash
+export BUTTONDOWN_API_KEY=your_api_key_here
+```
+
+See the [Buttondown API documentation](https://api.buttondown.com/v1/docs) for full API reference.
 
 ---
 
