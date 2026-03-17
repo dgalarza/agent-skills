@@ -68,6 +68,7 @@ Parse the user's intent to determine which operation to perform:
 | List channels | `channels` | "What channels do I have?" |
 | View posts | `posts` | "Show my scheduled posts" |
 | Create a text post | `create-post` | "Schedule a tweet saying..." |
+| Create a Twitter/X thread | `create-thread` | "Post a thread on X..." |
 | Create an image post | `create-post` | "Post this image to Instagram" |
 | Save an idea | `create-idea` | "Save an idea about..." |
 | Account info | `account` | "Show my Buffer account" |
@@ -163,6 +164,38 @@ echo "$result" | jq -e '.data.createPost.message' > /dev/null 2>&1 && {
   echo "$result" | jq '.data.createPost.post'
 }
 ```
+
+## Mode: Create Twitter/X Thread
+
+Twitter/X threads are created using the `metadata.twitter.thread` field on the `createPost` mutation. The thread is an array of `ThreadedPostInput` objects, each with a `text` field (and optional `assets`).
+
+**Important:** The first tweet in the thread must be included in the `thread` array. The top-level `text` field is also required but Buffer uses the thread array to render all tweets in its UI. Include the same text in both places for the first tweet.
+
+```bash
+cat > /tmp/buffer_payload.json << 'EOF'
+{"query": "mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { ... on PostActionSuccess { post { id text status dueAt } } ... on MutationError { message } } }", "variables": {"input": {"channelId": "<CHANNEL_ID>", "text": "<FIRST_TWEET_TEXT>", "schedulingType": "automatic", "mode": "addToQueue", "metadata": {"twitter": {"thread": [{"text": "<FIRST_TWEET_TEXT>"}, {"text": "<SECOND_TWEET_TEXT>"}, {"text": "<THIRD_TWEET_TEXT>"}]}}}}}
+EOF
+curl -s -X POST https://api.buffer.com \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $BUFFER_API_TOKEN" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d @/tmp/buffer_payload.json | jq .
+```
+
+### Thread Structure
+
+- **Top-level `text`**: Required. Use the first tweet's text.
+- **`metadata.twitter.thread`**: Array of `ThreadedPostInput` objects. Each has:
+  - **`text`** (String): The tweet content
+  - **`assets`** (AssetsInput, optional): Images for that specific tweet
+- The first entry in the `thread` array should match the top-level `text` (this is what Buffer displays as tweet 1).
+- All subsequent entries become reply tweets in the thread.
+
+### Thread Tips
+
+- Each tweet in the thread must respect Twitter's character limit (280 characters).
+- Threads are scheduled as a single unit and posted all at once.
+- Images can be attached to individual tweets via the `assets` field on each `ThreadedPostInput`.
 
 ## Mode: Create Image Post
 
