@@ -21,6 +21,7 @@ jobs:
       - name: Find changed skills
         id: changed
         run: |
+          git fetch origin ${{ github.base_ref }}
           skills=$(
             git diff --name-only --diff-filter=d origin/${{ github.base_ref }}...HEAD -- 'skills/' \
             | grep -oP '^skills/[^/]+' \
