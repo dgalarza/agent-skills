@@ -68,6 +68,18 @@ if [[ -z "$IDEA_ID" ]]; then
   exit 1
 fi
 
+if ! [[ "$IDEA_ID" =~ ^[0-9]+$ ]]; then
+  echo '{"error": "idea_id must be a positive integer"}' >&2
+  exit 1
+fi
+
+if ! [[ "$MAX_ATTEMPTS" =~ ^[0-9]+$ ]]; then
+  echo '{"error": "max-attempts must be a positive integer"}' >&2
+  exit 1
+fi
+
+BASE_URL="${BASE_URL%/}"
+
 if [[ -z "$CS_API_KEY" ]]; then
   echo '{"error": "CS_API_KEY environment variable is required"}' >&2
   exit 1
@@ -82,7 +94,12 @@ retry_after() {
   local default="${1:-10}"
   local value
   value=$(grep -i 'Retry-After' "$HEADERS_FILE" 2>/dev/null | tr -d '[:space:]' | cut -d: -f2)
-  echo "${value:-$default}"
+  value="${value:-$default}"
+  # Ensure numeric — fall back to default if header was malformed
+  if ! [[ "$value" =~ ^[0-9]+$ ]]; then
+    value="$default"
+  fi
+  echo "$value"
 }
 
 # --- Polling loop ---
@@ -126,6 +143,7 @@ while [[ $ATTEMPT -lt $MAX_ATTEMPTS ]]; do
     RETRY_AFTER=$(retry_after 30)
     echo "Rate limited, retrying in ${RETRY_AFTER}s..." >&2
     sleep "$RETRY_AFTER"
+    ATTEMPT=$((ATTEMPT - 1))  # rate limits should not consume polling budget
   else
     echo "{\"error\": \"Unexpected HTTP status: $HTTP_CODE\"}" >&2
     exit 1
