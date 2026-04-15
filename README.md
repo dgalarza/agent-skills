@@ -20,6 +20,7 @@ npx skills add dgalarza/agent-skills
 |-------|-------------|
 | [Buffer](skills/buffer/) | Schedule posts, manage queues, and save ideas via the Buffer social media API |
 | [Buttondown](skills/buttondown/) | Manage tags, automations, subscribers, and emails via the Buttondown newsletter API |
+| [CreatorSignal API](skills/creatorsignal-api/) | Submit video ideas for AI validation, poll for scored verdicts, manage channels and webhooks via the CreatorSignal API |
 
 ---
 
@@ -52,6 +53,22 @@ export BUTTONDOWN_API_KEY=your_api_key_here
 ```
 
 See the [Buttondown API documentation](https://api.buttondown.com/v1/docs) for full API reference.
+
+---
+
+## CreatorSignal API
+
+```bash
+npx skills add dgalarza/agent-skills --skill creatorsignal-api
+```
+
+Requires a `CS_API_KEY` environment variable. Generate one at Settings > API Keys in your [CreatorSignal account](https://app.creatorsignal.io).
+
+```bash
+export CS_API_KEY=cs_live_<prefix>_<secret>
+```
+
+Includes a polling helper script for validation results and reference docs for webhook integration.
 
 ---
 
