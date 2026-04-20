@@ -125,7 +125,7 @@ POST /automations
 ```
 Body includes trigger configuration and actions. Key fields:
 - `name`: descriptive name for the automation
-- `trigger`: the event that starts it (e.g., `subscriber.tags.changed`, `subscriber.confirmed`, `subscriber.created`, `email.sent`)
+- `trigger`: the event that starts it (e.g., `subscriber.tags.changed`, `subscriber.confirmed`, `subscriber.created`, `subscriber.clicked`, `email.sent`)
 - `status`: `"active"` or `"inactive"`
 - `filters`: object with `filters` array, `groups` array, and `predicate` (`"and"` or `"or"`)
 - `actions`: array of action objects with timing
@@ -133,6 +133,22 @@ Body includes trigger configuration and actions. Key fields:
 #### Filter fields
 - `tags` -- matches subscribers who have a specific tag
 - `special.tags_changed` -- matches when a specific tag was just added (use this for tag-based automations to avoid re-triggering)
+- `url` -- matches the clicked URL (use with `subscriber.clicked` trigger, operator `contains`)
+
+#### add_tags action structure
+```json
+{
+  "type": "add_tags",
+  "metadata": {
+    "tag_ids": ["sub_tag_xxxxx"]
+  },
+  "timing": {
+    "time": "immediate",
+    "delay": null
+  }
+}
+```
+Use `tag_ids` (array), not `tag` (singular). For immediate timing, set `delay` to `null`.
 
 #### send_email action structure
 Automation emails are defined inline in the action, not as separate email objects:

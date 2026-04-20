@@ -1,0 +1,48 @@
+name: Validate Skills
+
+on:
+  pull_request:
+    paths:
+      - "skills/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Find changed skills
+        id: changed
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          skills=$(
+            git diff --name-only --diff-filter=d origin/${{ github.base_ref }}...HEAD -- 'skills/' \
+            | grep -oP '^skills/[^/]+' \
+            | sort -u
+          )
+          echo "skills<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$skills" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Validate skills
+        run: |
+          failed=0
+          while IFS= read -r skill_dir; do
+            [ -z "$skill_dir" ] && continue
+            echo "::group::Validating $skill_dir"
+            if python .claude/skills/skill-creator/scripts/quick_validate.py "$skill_dir"; then
+              echo "✅ $skill_dir"
+            else
+              echo "::error::Validation failed for $skill_dir"
+              failed=1
+            fi
+            echo "::endgroup::"
+          done <<< "${{ steps.changed.outputs.skills }}"
+          exit $failed
