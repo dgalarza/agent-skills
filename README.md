@@ -20,6 +20,7 @@ npx skills add dgalarza/agent-skills
 |-------|-------------|
 | [Buffer](skills/buffer/) | Schedule posts, manage queues, and save ideas via the Buffer social media API |
 | [Buttondown](skills/buttondown/) | Manage tags, automations, subscribers, and emails via the Buttondown newsletter API |
+| [Conventional Comments](skills/conventional-comments/) | Write structured review feedback using the Conventional Comments format |
 | [CreatorSignal API](skills/creatorsignal-api/) | Submit video ideas for AI validation, poll for scored verdicts, manage channels and webhooks via the CreatorSignal API |
 
 ---
@@ -53,6 +54,16 @@ export BUTTONDOWN_API_KEY=your_api_key_here
 ```
 
 See the [Buttondown API documentation](https://api.buttondown.com/v1/docs) for full API reference.
+
+---
+
+## Conventional Comments
+
+```bash
+npx skills add dgalarza/agent-skills --skill conventional-comments
+```
+
+Use this skill to write or rewrite code review, document review, design feedback, RFC comments, and editing notes in the [Conventional Comments](https://conventionalcomments.org/) format.
 
 ---
 
