@@ -22,6 +22,7 @@ npx skills add dgalarza/agent-skills
 | [Buttondown](skills/buttondown/) | Manage tags, automations, subscribers, and emails via the Buttondown newsletter API |
 | [Conventional Comments](skills/conventional-comments/) | Write structured review feedback using the Conventional Comments format |
 | [CreatorSignal API](skills/creatorsignal-api/) | Submit video ideas for AI validation, poll for scored verdicts, manage channels and webhooks via the CreatorSignal API |
+| [Team Code Review](skills/team-code-review/) | Dispatch specialist agents to review code and verify every finding before reporting it |
 
 ---
 
@@ -80,6 +81,16 @@ export CS_API_KEY=cs_live_<prefix>_<secret>
 ```
 
 Includes a polling helper script for validation results and reference docs for webhook integration.
+
+---
+
+## Team Code Review
+
+```bash
+npx skills add dgalarza/agent-skills --skill team-code-review
+```
+
+Use this skill to dispatch focused reviewers across architecture, readability, testing, maintainability, security, and documentation. The coordinating agent independently verifies every candidate finding before reporting it.
 
 ---
 
