@@ -1,6 +1,6 @@
 # Opinionated Rails Review Profile
 
-Use this profile when reviewing a Rails application. These are Damian Galarza's preferred Rails defaults, not framework-neutral rules. Apply them to the changed behavior and its execution paths. Explicit repository instructions and documented architectural decisions take precedence, but do not discard a concern merely because the repository has not documented it.
+Use this opinionated profile when reviewing a Rails application. Apply it to the changed behavior and its execution paths. Explicit repository instructions and documented architectural decisions take precedence, but do not discard a concern merely because the repository has not documented it.
 
 Return a finding only when the diff introduces or materially exposes a concrete defect, operational risk, or maintenance cost. A preference that does not affect the change is not a finding.
 
@@ -57,7 +57,7 @@ Return a finding only when the diff introduces or materially exposes a concrete 
 - Check time-dependent behavior with an explicit clock or Rails time helpers. Include zone and boundary cases when they affect semantics.
 - Keep tests order-independent and compatible with randomized execution. Inspect leaked global configuration, cached constants, thread-local state, jobs, files, and database records.
 
-## Damian's quality defaults
+## Quality defaults
 
 Treat these as the preferred baseline when the repository has not intentionally chosen another standard:
 
