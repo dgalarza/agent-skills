@@ -13,6 +13,19 @@ Return a finding only when the diff introduces or materially exposes a concrete 
 - Prefer explicit collaborators at I/O boundaries. HTTP, storage, email, payment, and other external integrations should centralize request construction, authentication, serialization, response handling, timeouts, and error translation when the change would otherwise duplicate or scatter them.
 - Prefer reader methods and normal method dispatch over direct instance-variable reads outside the reader itself. This preserves an interception point for validation, memoization, typing, and tests.
 
+## POODR-inspired object design
+
+Use the changeability principles from Sandi Metz's [Practical Object-Oriented Design](https://www.poodr.com/) as review guidance, not as a demand for patterns or more objects.
+
+- Prefer composition over inheritance. Use inheritance only for a stable, genuine type relationship whose subclasses can honor the superclass contract without conditionals, refused behavior, or knowledge of sibling classes. Keep hierarchies shallow and favor composed role players when behavior varies independently.
+- Give each object one coherent responsibility and a small public interface. Judge responsibility by its reasons to change, not by line count; extract an object when the change reveals a distinct concept or isolates volatile behavior.
+- Depend on roles and messages rather than concrete class names. Inject collaborators when doing so lets objects vary independently, and isolate object construction at an application edge or small factory instead of mixing creation with use.
+- Ask collaborators for what the sender needs without reaching through them to direct how the work is done. Long message chains, exposed internal data, and repeated navigation indicate that responsibilities or interfaces may be misplaced.
+- Use duck typing and polymorphism when multiple objects can honor the same role. Repeated conditionals that select behavior by type or state may reveal a missing role; isolate variant selection rather than scattering the branching across callers.
+- Arrange dependencies toward objects that are less likely to change. Wrap unstable framework, vendor, and policy details behind interfaces owned by the application when that boundary reduces the cost of a demonstrated change.
+- Do not speculate abstractions into existence. Prefer simple, concrete code until duplication or changing requirements reveal the stable concept, then refactor toward the smallest abstraction that makes the next change cheaper.
+- Treat painful tests as design feedback. Excessive setup, knowledge of private methods, or many unrelated stubs often signals hidden dependencies or an object with too many responsibilities; improve the design rather than cementing it with more test machinery.
+
 ## Persistence and domain state
 
 - Enforce durable invariants in the database as well as the model where concurrency or non-Rails writers can violate them. Inspect nullability, foreign keys, unique and check constraints, indexes, and the behavior of bulk APIs that skip validations and callbacks.
