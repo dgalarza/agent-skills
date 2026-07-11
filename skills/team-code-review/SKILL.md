@@ -16,9 +16,11 @@ Determine whether the target is:
 
 Read the repository instructions first. Identify the exact review base and head, then inspect the complete diff and relevant surrounding code. Do not silently broaden the review to unrelated working-tree changes. If authorship is unclear, infer it from the conversation and PR metadata when available; ask only when the answer changes the workflow and cannot be discovered.
 
+Detect the application stack from repository evidence such as dependency manifests, framework configuration, and directory structure. Load any matching review profile before dispatching specialists. For a Rails application, read [references/rails.md](references/rails.md) and incorporate its applicable checks into the specialist assignments. Treat profiles as opinionated investigation guidance, not automatic findings; explicit repository instructions and documented architectural decisions take precedence.
+
 Record explicit non-goals and constraints. Keep the review read-only unless the user separately asks for fixes.
 
-Completion criterion: the review target, authorship branch, base/head, repository guidance, and changed files are known.
+Completion criterion: the review target, authorship branch, base/head, repository guidance, changed files, application stack, and applicable review profiles are known.
 
 ## 2. Dispatch the review team
 
