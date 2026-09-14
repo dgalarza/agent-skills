@@ -5,7 +5,23 @@ description: Review an agent's own code changes or another contributor's pull re
 
 # Team Code Review
 
-Run a read-only, evidence-driven code review with specialist agents. The main agent owns scope, verification, deduplication, severity, and the final report.
+Run a read-only, evidence-driven code review with specialist agents. The review coordinator owns scope, verification, deduplication, severity, and the final report. In the steps below, “main agent” means that coordinator, which may be a fresh agent in Herdr rather than the original caller.
+
+## 0. Choose where the review runs
+
+Check whether the caller is inside Herdr:
+
+```bash
+test "${HERDR_ENV:-}" = 1
+```
+
+- **Inside Herdr:** follow [references/herdr.md](references/herdr.md) to launch a fresh agent of the same kind in a new sibling pane and hand off this review. This is the user's standing preference for this skill, not a general permission to use Herdr for unrelated tasks.
+- **Outside Herdr:** run steps 1–4 here without issuing Herdr commands.
+- **Already the delegated review coordinator:** when your current assigned review pass explicitly contains `TEAM_CODE_REVIEW_COORDINATOR=1`, skip the pane handoff and run steps 1–4 here. Pass this marker to any specialists that may load this skill as well; it prevents recursive coordinator spawning. The marker applies only to that pass, not to later review requests.
+
+Every new review or re-review in Herdr requires a fresh agent session, including reviewing fixes or repeating an unchanged target. The original caller closes its previous reviewer pane and launches a new same-kind coordinator following the ownership checks in [references/herdr.md](references/herdr.md). Never send a new pass to the old reviewer or resume its session. If a new pass is requested directly in the reviewer pane, hand control back to the original caller for replacement; do not close your own pane or review again in the existing context.
+
+Honor an explicit request to review in the current agent instead. If Herdr or the caller's agent kind cannot be resolved, explain the limitation and ask whether to proceed locally; do not silently substitute a different agent kind.
 
 ## 1. Establish the review target
 
@@ -44,7 +60,7 @@ Ask every specialist to return only actionable findings with:
 
 Specialists should omit praise, style preferences without impact, speculative concerns, and findings outside the changed code unless the change directly activates them. They may inspect and run safe checks, but must not edit files or publish review comments.
 
-Run specialists concurrently when capacity allows; batch them when it does not. The main agent must retain enough context and time to verify their work.
+Run specialists concurrently when capacity allows; batch them when it does not. If the runtime has no subagent facility, the coordinator investigates all six lenses sequentially and discloses that limitation rather than claiming a multi-agent review. The main agent must retain enough context and time to verify their work.
 
 Completion criterion: every lens has been investigated and each specialist has either returned candidate findings or explicitly reported no actionable findings.
 
