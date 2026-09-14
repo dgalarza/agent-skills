@@ -17,7 +17,9 @@ test "${HERDR_ENV:-}" = 1
 
 - **Inside Herdr:** follow [references/herdr.md](references/herdr.md) to launch a fresh agent of the same kind in a new sibling pane and hand off this review. This is the user's standing preference for this skill, not a general permission to use Herdr for unrelated tasks.
 - **Outside Herdr:** run steps 1–4 here without issuing Herdr commands.
-- **Already the delegated review coordinator:** when your task explicitly contains `TEAM_CODE_REVIEW_COORDINATOR=1`, skip the pane handoff and run steps 1–4 here. Pass this marker to any specialists that may load this skill as well; it prevents recursive coordinator spawning.
+- **Already the delegated review coordinator:** when your current assigned review pass explicitly contains `TEAM_CODE_REVIEW_COORDINATOR=1`, skip the pane handoff and run steps 1–4 here. Pass this marker to any specialists that may load this skill as well; it prevents recursive coordinator spawning. The marker applies only to that pass, not to later review requests.
+
+Every new review or re-review in Herdr requires a fresh agent session, including reviewing fixes or repeating an unchanged target. The original caller closes its previous reviewer pane and launches a new same-kind coordinator following the ownership checks in [references/herdr.md](references/herdr.md). Never send a new pass to the old reviewer or resume its session. If a new pass is requested directly in the reviewer pane, hand control back to the original caller for replacement; do not close your own pane or review again in the existing context.
 
 Honor an explicit request to review in the current agent instead. If Herdr or the caller's agent kind cannot be resolved, explain the limitation and ask whether to proceed locally; do not silently substitute a different agent kind.
 
