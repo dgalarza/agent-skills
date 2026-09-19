@@ -5,7 +5,7 @@ description: Review an agent's own code changes or another contributor's pull re
 
 # Team Code Review
 
-Run a read-only, evidence-driven code review with specialist agents. The main agent owns scope, verification, deduplication, severity, and the final report.
+Run a read-only, static, evidence-driven code review with specialist agents. The main agent owns scope, verification, deduplication, severity, and the final report. Evidence comes from reading code, not executing it: the review does not run tests, linters, type checkers, or builds — CI owns that feedback loop.
 
 ## 1. Establish the review target
 
@@ -39,10 +39,10 @@ Ask every specialist to return only actionable findings with:
 - exact file and tight line range;
 - the concrete failure mode or maintenance cost;
 - evidence from the diff and relevant surrounding code;
-- a concise remediation direction;
-- tests or commands used to validate the claim.
+- the reasoning path that validates the claim, grounded in the cited code;
+- a concise remediation direction.
 
-Specialists should omit praise, style preferences without impact, speculative concerns, and findings outside the changed code unless the change directly activates them. They may inspect and run safe checks, but must not edit files or publish review comments.
+Specialists should omit praise, style preferences without impact, speculative concerns, and findings outside the changed code unless the change directly activates them. They inspect code, tests, and repository context statically and must not run tests, linters, type checkers, builds, or other checks — CI already produces that signal and duplicating it wastes review time and budget. Reading existing CI output is fine when directly relevant. They must not edit files or publish review comments.
 
 Run specialists concurrently when capacity allows; batch them when it does not. The main agent must retain enough context and time to verify their work.
 
@@ -55,7 +55,7 @@ The main agent must independently verify every candidate before reporting it:
 1. Open the cited lines and enough surrounding code to understand the execution path.
 2. Confirm the issue is introduced by or materially exposed by the target diff.
 3. Search for callers, shared abstractions, tests, configuration, generated-code boundaries, and documentation that could invalidate the claim.
-4. Reproduce with the narrowest safe test, static check, or concrete reasoning path available.
+4. Validate with a concrete reasoning path from the diff to the failure mode, grounded in the opened code and traced callers. Do not execute tests, linters, or builds to confirm a finding; run something only when the user explicitly asked for runtime verification.
 5. Calibrate severity to actual impact and likelihood.
 6. Merge duplicates across specialists and discard unverified, speculative, or non-actionable items.
 
@@ -76,7 +76,7 @@ Lead with findings ordered by severity, then confidence. For each finding includ
 Then include:
 
 - a concise overall assessment;
-- testing performed and any checks that could not be run;
+- that verification was static — findings rest on code reading and reasoning — plus any uncertainty that introduces;
 - remaining risks or coverage gaps;
 - a brief note when no actionable findings were verified.
 
@@ -89,6 +89,7 @@ If the user agrees to a PR review draft, invoke the `conventional-comments` skil
 ## Review standard
 
 - Review the change in repository context, not as isolated snippets.
+- Execution belongs to CI: review by reading code and tests, not by running them. Consult existing CI results when they are relevant evidence.
 - Prefer concrete defects and material design costs over taste.
 - Do not confuse missing tests with a proven production defect; describe the actual coverage risk.
 - Do not require a pattern such as an API client or service object by name. Recommend it only when it resolves demonstrated duplication, coupling, inconsistency, or testability problems.
