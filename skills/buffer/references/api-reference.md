@@ -77,15 +77,16 @@ Complete type definitions for the Buffer GraphQL API at `https://api.buffer.com`
 
 ## Enums
 
-### PostMode
+### ShareMode
+
+The GraphQL enum type is named `ShareMode` (the `mode` field's type), not `PostMode`. Confirmed via introspection — only these four values exist:
 
 | Value | Description |
 |-------|-------------|
 | `addToQueue` | Add post to the end of the scheduling queue |
 | `shareNow` | Publish the post immediately |
 | `shareNext` | Add post to the front of the queue (next to be published) |
-| `customSchedule` | Schedule for a specific date/time (requires `dueAt` field) |
-| `recommendedTime` | Use Buffer's recommended optimal posting time |
+| `customScheduled` | Schedule for a specific date/time (requires `dueAt` field) — note the trailing `d` |
 
 ### SchedulingType
 
