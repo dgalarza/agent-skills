@@ -22,6 +22,7 @@ npx skills add dgalarza/agent-skills
 | [Buttondown](skills/buttondown/) | Manage tags, automations, subscribers, and emails via the Buttondown newsletter API |
 | [Conventional Comments](skills/conventional-comments/) | Write structured review feedback using the Conventional Comments format |
 | [CreatorSignal API](skills/creatorsignal-api/) | Submit video ideas for AI validation, poll for scored verdicts, manage channels and webhooks via the CreatorSignal API |
+| [Herdr Code Review](skills/herdr-code-review/) | Spawn a fresh reviewer agent in a sibling Herdr pane and delegate a full team-code-review pass to it |
 | [Team Code Review](skills/team-code-review/) | Dispatch specialist agents to review code and verify every finding before reporting it |
 
 ---
@@ -81,6 +82,16 @@ export CS_API_KEY=cs_live_<prefix>_<secret>
 ```
 
 Includes a polling helper script for validation results and reference docs for webhook integration.
+
+---
+
+## Herdr Code Review
+
+```bash
+npx skills add dgalarza/agent-skills --skill herdr-code-review
+```
+
+Use this skill to delegate a code review to a fresh agent started in a new sibling pane of the current Herdr workspace. The spawned reviewer runs the `team-code-review` skill end to end; the caller owns the handoff, reviewer lifecycle, and relaying the report. Requires `HERDR_ENV=1` and the `herdr` and `team-code-review` skills. Triggers only on an explicit request to review in a new or separate Herdr agent — a plain code-review request should use `team-code-review` in the current agent.
 
 ---
 
