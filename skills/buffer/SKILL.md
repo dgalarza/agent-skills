@@ -146,8 +146,8 @@ curl -s -X POST https://api.buffer.com \
 ### Scheduling Options
 
 - **schedulingType**: `automatic` (Buffer picks time) or `notification` (sends reminder)
-- **mode**: Controls when the post is published (e.g., `addToQueue`, `shareNow`, `shareNext`, `customSchedule`, `recommendedTime`)
-- **dueAt** (String): ISO 8601 datetime, required when mode is `customSchedule`. Example: `"2026-03-15T14:00:00Z"`
+- **mode**: Controls when the post is published. The actual GraphQL enum is `ShareMode` and only has four values: `addToQueue`, `shareNow`, `shareNext`, `customScheduled` (note the `d` — not `customSchedule`). There is no `recommendedTime` value; if you see it referenced anywhere, it's wrong. Confirm via schema introspection (`__type(name: "ShareMode") { enumValues { name } }`) if in doubt.
+- **dueAt** (String): ISO 8601 datetime, required when mode is `customScheduled`. Example: `"2026-03-15T14:00:00Z"`
 
 For full field definitions and enum values, refer to `references/api-reference.md`.
 
@@ -164,6 +164,21 @@ echo "$result" | jq -e '.data.createPost.message' > /dev/null 2>&1 && {
   echo "$result" | jq '.data.createPost.post'
 }
 ```
+
+## Mentioning a LinkedIn Page (Company / Showcase Pages)
+
+To @mention a LinkedIn Company or Showcase Page in a scheduled post, paste the page's full LinkedIn URL directly into the post `text`. LinkedIn resolves a recognized company/showcase page URL into a proper @mention chip on publish — you do not need to look up an organization ID or build an annotation payload for this.
+
+Examples:
+
+```text
+https://www.linkedin.com/company/<slug>
+https://www.linkedin.com/showcase/<slug>
+```
+
+Confirmed working example: `https://www.linkedin.com/showcase/docusigndevs` (the Docusign Developers showcase page).
+
+**Lower-level mechanism (rarely needed):** the schema does expose `metadata.linkedin.annotations` (type `AnnotationInputLinkedIn`), which lets you mark an exact substring of `text` (`start`, `length`) as a mention tied to an explicit `id`/`entity` (LinkedIn organization URN), `link`, `localizedName`, and `vanityName`. This is how Buffer's own composer likely implements the mention picker. There is no public query in this API to resolve a page URL or vanity name into its organization URN, so building this payload yourself isn't practical from the API alone — pasting the page URL in `text` is the reliable method.
 
 ## Mode: Create Twitter/X Thread
 
@@ -244,6 +259,23 @@ curl -s -X POST https://api.buffer.com \
   -H "User-Agent: Mozilla/5.0" \
   -d '{"query": "{ account { organizations { id name ownerEmail } } }"}' | jq .
 ```
+
+## Mode: Edit an Existing Post
+
+Use the `editPost` mutation to update a scheduled post (e.g. to add a LinkedIn first comment with the real link once it's available).
+
+```bash
+cat > /tmp/buffer_payload.json << 'EOF'
+{"query": "mutation EditPost($input: EditPostInput!) { editPost(input: $input) { ... on PostActionSuccess { post { id status dueAt channelService } } ... on MutationError { message } } }", "variables": {"input": {"id": "<POST_ID>", "text": "<FULL_POST_TEXT_AGAIN>", "metadata": {"linkedin": {"firstComment": "<COMMENT_TEXT>"}}}}}
+EOF
+curl -s -X POST https://api.buffer.com \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $BUFFER_API_TOKEN" \
+  -H "User-Agent: Mozilla/5.0" \
+  -d @/tmp/buffer_payload.json | jq .
+```
+
+**Gotcha:** `editPost` rejects a request that sends `metadata` (or any other field) without `text`, even though `text` is optional in `EditPostInput` and you're not trying to change it — it fails with `"Invalid post: Post must have either text or media."` Always re-send the full existing `text` alongside whatever field you're actually updating.
 
 ## Common Workflows
 
@@ -339,4 +371,4 @@ Mutations return union types. Always handle the `MutationError` variant:
 - **401 Unauthorized**: Token is invalid or expired. Regenerate at https://publish.buffer.com/settings/api
 - **Missing organizationId**: Most queries require an org ID. Fetch organizations first.
 - **Invalid channelId**: Verify the channel exists and belongs to the current organization.
-- **Past dueAt**: When using `customSchedule`, the `dueAt` must be in the future.
+- **Past dueAt**: When using `customScheduled`, the `dueAt` must be in the future.
