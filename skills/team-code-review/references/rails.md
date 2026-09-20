@@ -2,7 +2,9 @@
 
 Use this opinionated profile when reviewing a Rails application. Apply it to the changed behavior and its execution paths. Explicit repository instructions and documented architectural decisions take precedence, but do not discard a concern merely because the repository has not documented it.
 
-Return a finding only when the diff introduces or materially exposes a concrete defect, operational risk, or maintenance cost. A preference that does not affect the change is not a finding.
+This is an investigation checklist, not a finding checklist. Every item below is a place to look; none of them is a defect on its own. Return a finding only when the diff introduces or materially exposes a concrete defect, operational risk, or maintenance cost, and only when you can name a realistic path that reaches it — a caller, request, job run, migration, or deploy that actually produces the conditions. A preference that does not affect the change is not a finding, and neither is a risk this application's data, scale, or usage does not expose it to.
+
+Calibrate to the application in front of you. Concurrency, lock duration, N+1 cost, rolling-deploy compatibility, and cache-key scope matter in proportion to real table sizes, traffic, tenancy, and deploy model; check the repository for that evidence instead of assuming the worst case.
 
 ## Rails shape and boundaries
 
@@ -84,4 +86,4 @@ Treat these as the preferred baseline when the repository has not intentionally 
 - Timestamp-backed state instead of boolean database columns when transition time carries domain value.
 - One implementation class or module per file, direct instance-variable reads hidden behind readers, and environment changes in tests isolated with ClimateControl.
 
-Discover the repository's actual commands before running checks. Prefer its aggregate entrypoint, especially `bin/ci`, when available. Otherwise derive focused commands from `Gemfile`, `bin/`, CI workflows, and repository instructions. Report which checks ran and which could not run; do not require a tool that the application has intentionally excluded unless its absence creates a specific risk in the reviewed change.
+These are defaults, not requirements. Do not report the absence of a tool from this list as a finding; the review is static and CI owns execution. Read the repository's `Gemfile`, `bin/`, and CI workflows to learn which checks it already runs, and consult their existing output when it is relevant evidence. Raise a missing tool only when its absence creates a specific, named risk in the reviewed change.
