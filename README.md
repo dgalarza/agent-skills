@@ -23,6 +23,7 @@ npx skills add dgalarza/agent-skills
 | [Conventional Comments](skills/conventional-comments/) | Write structured review feedback using the Conventional Comments format |
 | [CreatorSignal API](skills/creatorsignal-api/) | Submit video ideas for AI validation, poll for scored verdicts, manage channels and webhooks via the CreatorSignal API |
 | [Herdr Code Review](skills/herdr-code-review/) | Spawn a fresh reviewer agent in a sibling Herdr pane and delegate a full team-code-review pass to it |
+| [Stacked PRs](skills/stacked-prs/) | Break a large change into small, dependent pull requests with GitHub stacked PRs and the `gh stack` CLI |
 | [Team Code Review](skills/team-code-review/) | Dispatch specialist agents to review code and verify every finding before reporting it |
 
 ---
@@ -92,6 +93,24 @@ npx skills add dgalarza/agent-skills --skill herdr-code-review
 ```
 
 Use this skill to delegate a code review to a fresh agent started in a new sibling pane of the current Herdr workspace. The spawned reviewer runs the `team-code-review` skill end to end; the caller owns the handoff, reviewer lifecycle, and relaying the report. Requires `HERDR_ENV=1` and the `herdr` and `team-code-review` skills. Triggers only on an explicit request to review in a new or separate Herdr agent — a plain code-review request should use `team-code-review` in the current agent.
+
+---
+
+## Stacked PRs
+
+```bash
+npx skills add dgalarza/agent-skills --skill stacked-prs
+```
+
+Use this skill to break a large change into a chain of small, dependent pull requests using [GitHub stacked pull requests](https://docs.github.com/en/pull-requests/get-started/about-stacked-prs) and the `gh stack` CLI extension. Covers the full lifecycle: initializing a stack, layering branches, submitting linked PRs, rebasing, syncing after merges, restructuring, and merging.
+
+Requires GitHub CLI (`gh`) 2.90.0 or later and the extension:
+
+```bash
+gh extension install github/gh-stack
+```
+
+Includes a complete `gh stack` command reference with every flag, exit code, and environment variable.
 
 ---
 
