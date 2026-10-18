@@ -5,6 +5,13 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Plugin and marketplace versions use calendar versioning, `YYYY.MM.PATCH` (example `2026.10.0`). Git release tags stay `YYYY.MM.DD`.
 
+## [2026.10.1] — Unreleased
+
+### Fixed
+- Plugin manifests point `repository` at `https://github.com/dgalarza/agent-skills`.
+- The codebase-readiness report footer names `agent-skills` instead of `claude-code-workflows`.
+- `codebase-readiness`, `agent-ready`, and `engineering-skills` are `2026.10.1`.
+
 ## [2026.10.0] — 2026-10-18
 
 ### Breaking
