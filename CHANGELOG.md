@@ -5,7 +5,7 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Plugin and marketplace versions use calendar versioning, `YYYY.MM.PATCH` (example `2026.10.0`). Git release tags stay `YYYY.MM.DD`.
 
-## [2026.10.0] — 2026-10-14
+## [2026.10.0] — 2026-10-18
 
 ### Breaking
 - Marketplace name is `dgalarza-agent-skills`. It was `dgalarza-workflows`. The bare name `agent-skills` is reserved by Claude Code for Anthropic marketplaces. Existing Claude Code installs need `/plugin marketplace add dgalarza/agent-skills` and a fresh `/plugin install <name>@dgalarza-agent-skills`. The GitHub repository was renamed from `dgalarza/claude-code-workflows` to `dgalarza/agent-skills`. Old URLs redirect.
@@ -94,7 +94,7 @@ Plugin and marketplace versions use calendar versioning, `YYYY.MM.PATCH` (exampl
 ### Docs
 - Documented release process and versioning strategy
 
-[2026.10.0]: https://github.com/dgalarza/claude-code-workflows/tree/cursor/canonical-agent-skills-bb25
+[2026.10.0]: https://github.com/dgalarza/agent-skills/tree/2026.10.18
 [2026.10.01]: https://github.com/dgalarza/agent-skills/tree/2026.10.01
 [2026.09.22]: https://github.com/dgalarza/agent-skills/tree/2026.09.22
 [2026.09.06]: https://github.com/dgalarza/agent-skills/tree/2026.09.06
