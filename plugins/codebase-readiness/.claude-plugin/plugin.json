@@ -1,12 +1,12 @@
 {
   "name": "codebase-readiness",
-  "version": "2026.10.0",
+  "version": "2026.10.1",
   "description": "Agent-Ready Codebase Assessment — scores a codebase across 8 dimensions, including agent-instruction and domain-context topology, and generates an actionable improvement roadmap framed around the Stripe AI benchmark",
   "author": {
     "name": "Damian Galarza",
     "url": "https://www.damiangalarza.com"
   },
-  "repository": "https://github.com/dgalarza/claude-code-workflows",
+  "repository": "https://github.com/dgalarza/agent-skills",
   "license": "MIT",
   "keywords": [
     "ai",
