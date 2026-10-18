@@ -61,7 +61,7 @@ npx skills add dgalarza/agent-skills --skill herdr-code-review
 
 ---
 
-## Productivity
+## Utilities
 
 This is an operator utility. It is not a Claude plugin. Install with `npx skills`.
 

@@ -60,7 +60,7 @@ Canonical files are `skills/<name>/SKILL.md`. Plugins symlink at those directori
 |-------|-------------|
 | `herdr-code-review` | Delegate `team-code-review` to a fresh sibling Herdr pane. Requires `HERDR_ENV=1` and the `team-code-review` skill |
 
-### Productivity (npx only)
+### Utilities (npx only)
 
 | Skill | Description |
 |-------|-------------|
