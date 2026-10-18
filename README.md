@@ -6,7 +6,7 @@ One skills library for Claude Code, Cursor, Codex, and other coding agents.
 
 Skills live in `skills/<name>/SKILL.md`. Claude Code plugins are thin manifests that point at those skills. Install details are in [INSTALL.md](INSTALL.md).
 
-The GitHub repository is still `dgalarza/claude-code-workflows` until it is renamed to `dgalarza/agent-skills`. This tree is the library that rename should point at. Do not create a second repository with the old name.
+This repository was `dgalarza/claude-code-workflows`. Old links redirect here.
 
 ---
 
@@ -53,21 +53,25 @@ npx skills add dgalarza/agent-skills --skill tdd -a codex
 
 The bundle manifest is [plugins/engineering-skills](plugins/engineering-skills/README.md).
 
+[herdr-code-review](skills/herdr-code-review/SKILL.md) runs `team-code-review` in a fresh sibling Herdr pane. It needs `HERDR_ENV=1`. It is not in the bundle. Install it with `npx skills`:
+
+```bash
+npx skills add dgalarza/agent-skills --skill herdr-code-review
+```
+
 ---
 
-## Productivity
+## Utilities
 
-These are operator utilities. They are not Claude plugins. Install with `npx skills`.
+This is an operator utility. It is not a Claude plugin. Install with `npx skills`.
 
 ```bash
 npx skills add dgalarza/agent-skills --skill buffer
-npx skills add dgalarza/agent-skills --skill herdr-code-review
 ```
 
 | Skill | What it does |
 |-------|----------------|
 | [buffer](skills/buffer/SKILL.md) | Schedule posts and manage a Buffer queue. Requires `BUFFER_API_TOKEN` |
-| [herdr-code-review](skills/herdr-code-review/SKILL.md) | Run `team-code-review` in a fresh sibling Herdr pane. Requires `HERDR_ENV=1` |
 
 ---
 

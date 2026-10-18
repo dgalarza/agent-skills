@@ -2,8 +2,6 @@
 
 Canonical install paths for this library. Marketplace name: `dgalarza-agent-skills`. Repository shorthand: `dgalarza/agent-skills`.
 
-The GitHub rename from `dgalarza/claude-code-workflows` to `dgalarza/agent-skills` happens after this change merges. Use the commands below once that rename is in place. Rename the existing repository so the old URL keeps redirecting. A new repository created with the old name would break that redirect.
-
 ## Claude Code
 
 ```bash
@@ -23,7 +21,7 @@ Plugins:
 /plugin install engineering-skills@dgalarza-agent-skills
 ```
 
-Operator utilities are not Claude plugins. Install them with `npx skills`.
+`herdr-code-review` and the operator utility `buffer` are not in a Claude plugin. Install them with `npx skills`.
 
 ## Cursor, Codex, and other agents
 
@@ -56,12 +54,17 @@ Canonical files are `skills/<name>/SKILL.md`. Plugins symlink at those directori
 | `conventional-commits` | Structured commit messages |
 | `tdd` | Red-green-refactor, one behavior at a time. No install hook |
 
-### Productivity (npx only)
+`herdr-code-review` is an engineering skill outside the bundle (npx only):
+
+| Skill | Description |
+|-------|-------------|
+| `herdr-code-review` | Delegate `team-code-review` to a fresh sibling Herdr pane. Requires `HERDR_ENV=1` and the `team-code-review` skill |
+
+### Utilities (npx only)
 
 | Skill | Description |
 |-------|-------------|
 | `buffer` | Buffer scheduling API. Requires `BUFFER_API_TOKEN` |
-| `herdr-code-review` | Delegate `team-code-review` to a fresh sibling Herdr pane. Requires `HERDR_ENV=1` and the `team-code-review` skill |
 
 ### Assess and prepare
 
