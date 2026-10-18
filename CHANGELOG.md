@@ -14,7 +14,7 @@ Plugin and marketplace versions use calendar versioning, `YYYY.MM.PATCH` (exampl
 ### Added
 - Canonical skills at `skills/<name>/SKILL.md`. Claude plugins are thin manifests with symlinks into that tree.
 - **engineering-skills** bundle: `team-code-review`, `stacked-prs`, `conventional-comments`, `conventional-commits`, and a rewritten `tdd`.
-- Operator utilities from `dgalarza/agent-skills`, installed with `npx skills` only: `buffer`, `buttondown`, `herdr-code-review`.
+- Operator utilities from `dgalarza/agent-skills`, installed with `npx skills` only: `buffer`, `herdr-code-review`. `buttondown` was not imported; it stays a private skill.
 - Marketplace `renames`: `tdd-workflow`, `conventional-commits`, and `parallel-code-review` point at `engineering-skills`. Retired plugins point at `null`.
 
 ### Changed

@@ -61,14 +61,12 @@ These are operator utilities. They are not Claude plugins. Install with `npx ski
 
 ```bash
 npx skills add dgalarza/agent-skills --skill buffer
-npx skills add dgalarza/agent-skills --skill buttondown
 npx skills add dgalarza/agent-skills --skill herdr-code-review
 ```
 
 | Skill | What it does |
 |-------|----------------|
 | [buffer](skills/buffer/SKILL.md) | Schedule posts and manage a Buffer queue. Requires `BUFFER_API_TOKEN` |
-| [buttondown](skills/buttondown/SKILL.md) | Manage Buttondown tags, automations, subscribers, and emails. Requires `BUTTONDOWN_API_KEY` |
 | [herdr-code-review](skills/herdr-code-review/SKILL.md) | Run `team-code-review` in a fresh sibling Herdr pane. Requires `HERDR_ENV=1` |
 
 ---

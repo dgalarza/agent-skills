@@ -40,7 +40,7 @@ Three plugins:
 | `agent-ready` | scaffold, quality gates, migrate, audit |
 | `engineering-skills` | team-code-review, stacked-prs, conventional-comments, conventional-commits, tdd |
 
-`buffer`, `buttondown`, and `herdr-code-review` are skills with no plugin entry. `npx skills` discovers them from `skills/`.
+`buffer` and `herdr-code-review` are skills with no plugin entry. `npx skills` discovers them from `skills/`.
 
 The `renames` object records old plugin names. A string value is the plugin to load instead. `null` means the plugin was removed. Claude Code follows the chain and stops at a current plugin name or `null`. The map is append-only.
 

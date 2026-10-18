@@ -37,7 +37,6 @@ Examples:
 npx skills add dgalarza/agent-skills --skill team-code-review -a cursor
 npx skills add dgalarza/agent-skills --skill stacked-prs -a codex
 npx skills add dgalarza/agent-skills --skill buffer
-npx skills add dgalarza/agent-skills --skill buttondown
 npx skills add dgalarza/agent-skills --skill herdr-code-review
 ```
 
@@ -62,7 +61,6 @@ Canonical files are `skills/<name>/SKILL.md`. Plugins symlink at those directori
 | Skill | Description |
 |-------|-------------|
 | `buffer` | Buffer scheduling API. Requires `BUFFER_API_TOKEN` |
-| `buttondown` | Buttondown newsletter API. Requires `BUTTONDOWN_API_KEY` |
 | `herdr-code-review` | Delegate `team-code-review` to a fresh sibling Herdr pane. Requires `HERDR_ENV=1` and the `team-code-review` skill |
 
 ### Assess and prepare

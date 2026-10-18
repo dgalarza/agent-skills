@@ -21,7 +21,7 @@ plugins/<plugin-name>/
 .agents/skills/               # Vendored skill-creator used by CI. Not a published skill
 ```
 
-Claude Code plugins are `codebase-readiness`, `agent-ready`, and `engineering-skills`. Operator utilities (`buffer`, `buttondown`, `herdr-code-review`) stay under `skills/` and are installed with `npx skills` only.
+Claude Code plugins are `codebase-readiness`, `agent-ready`, and `engineering-skills`. Operator utilities (`buffer`, `herdr-code-review`) stay under `skills/` and are installed with `npx skills` only.
 
 Symlinks stay inside this repository. Claude Code dereferences a symlink whose target is another directory in the same marketplace and copies that content into the plugin cache.
 
