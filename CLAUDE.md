@@ -1,6 +1,6 @@
 # Agent Skills
 
-Contributor guide for this skills library when working in Claude Code. The marketplace name is `dgalarza-agent-skills`. The GitHub repository is `dgalarza/claude-code-workflows` until that repository is renamed to `dgalarza/agent-skills`.
+Contributor guide for this skills library when working in Claude Code. The marketplace name is `dgalarza-agent-skills`. The GitHub repository is `dgalarza/agent-skills`. It was renamed from `dgalarza/claude-code-workflows`. Do not create a repository with the old name, because that breaks GitHub's redirect.
 
 Architecture and the reasons for the layout are in [ARCHITECTURE.md](ARCHITECTURE.md). [AGENTS.md](AGENTS.md) is the same guide for other agents.
 
@@ -21,7 +21,7 @@ plugins/<plugin-name>/
 .agents/skills/               # Vendored skill-creator used by CI. Not a published skill
 ```
 
-Claude Code plugins are `codebase-readiness`, `agent-ready`, and `engineering-skills`. Operator utilities (`buffer`, `herdr-code-review`) stay under `skills/` and are installed with `npx skills` only.
+Claude Code plugins are `codebase-readiness`, `agent-ready`, and `engineering-skills`. `herdr-code-review` (an engineering skill outside the bundle) and the operator utility `buffer` stay under `skills/` and are installed with `npx skills` only.
 
 Symlinks stay inside this repository. Claude Code dereferences a symlink whose target is another directory in the same marketplace and copies that content into the plugin cache.
 

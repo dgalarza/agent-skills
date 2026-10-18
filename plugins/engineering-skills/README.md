@@ -31,4 +31,4 @@ npx skills add dgalarza/agent-skills --skill tdd -a cursor
 npx skills add dgalarza/agent-skills --skill stacked-prs -a codex
 ```
 
-Operator utilities (buffer, herdr-code-review) are not part of this plugin. Install those with `npx skills` only. See [INSTALL.md](../../INSTALL.md).
+`herdr-code-review` (run `team-code-review` in a fresh Herdr pane) and `buffer` are not part of this plugin. Install those with `npx skills` only. See [INSTALL.md](../../INSTALL.md).
