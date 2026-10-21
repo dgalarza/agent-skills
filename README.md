@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="Agent Skills logo" width="96" height="96">
+</p>
+
 # Agent Skills
 
 One skills library for Claude Code, Cursor, Codex, and other coding agents.
