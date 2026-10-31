@@ -76,6 +76,7 @@ npx skills add dgalarza/agent-skills --skill buffer
 | Skill | What it does |
 |-------|----------------|
 | [buffer](skills/buffer/SKILL.md) | Schedule posts and manage a Buffer queue. Requires `BUFFER_API_TOKEN` |
+| [code-snippet](skills/code-snippet/SKILL.md) | Turn code into a branded, Carbon-style snippet image with a live preview and PNG export. Needs `python3` and a browser |
 
 ---
 

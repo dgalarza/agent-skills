@@ -21,7 +21,7 @@ Plugins:
 /plugin install engineering-skills@dgalarza-agent-skills
 ```
 
-`herdr-code-review` and the operator utility `buffer` are not in a Claude plugin. Install them with `npx skills`.
+`herdr-code-review` and the operator utilities `buffer` and `code-snippet` are not in a Claude plugin. Install them with `npx skills`.
 
 ## Cursor, Codex, and other agents
 
@@ -65,6 +65,7 @@ Canonical files are `skills/<name>/SKILL.md`. Plugins symlink at those directori
 | Skill | Description |
 |-------|-------------|
 | `buffer` | Buffer scheduling API. Requires `BUFFER_API_TOKEN` |
+| `code-snippet` | Branded Carbon-style code snippet image. Needs `python3` and a browser |
 
 ### Assess and prepare
 
