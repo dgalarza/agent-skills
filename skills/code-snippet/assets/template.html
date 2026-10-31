@@ -18,7 +18,7 @@
     --font-heading:"PP Neue Machina","Helvetica Neue",Arial,sans-serif;
     --font-body:"PP Neue Montreal","Helvetica Neue",Arial,sans-serif;
     --font-mono:"PP Neue Montreal Mono","SF Mono",ui-monospace,Menlo,monospace;
-    --stage:var(--red);
+    --stage:var(--red); --k:1;
   }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--grey-050); color:var(--black); font-family:var(--font-body); min-height:100vh; }
@@ -39,20 +39,28 @@
   .btn.ghost { background:transparent; border:1px solid var(--grey-600); }
   .seg { display:flex; gap:8px; }
   .seg .btn { padding:12px 14px; flex:1; }
+  #shapes .btn { padding:12px 4px; letter-spacing:.08em; min-width:0; }
   .btn.ghost[aria-pressed="true"] { background:var(--grey-100); color:var(--black); border-color:var(--grey-100); }
 
   .preview { display:flex; align-items:center; justify-content:center; padding:32px; overflow:auto; }
 
   /* The exported frame */
   #frame { background:var(--stage); padding:64px; display:inline-block; min-width:min-content; }
-  .window { background:var(--black); border:1px solid var(--border-secondary); border-radius:12px; box-shadow:0 24px 64px rgba(26,25,18,.45); overflow:hidden; min-width:640px; }
-  .titlebar { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:14px 20px; border-bottom:1px solid var(--border-secondary); background:var(--grey-900); }
-  .dots { display:flex; gap:8px; }
-  .dots i { width:10px; height:10px; border-radius:50%; background:var(--grey-700); display:block; }
+  #scaler { transform-origin:top left; }
+  /* Fixed shapes: exact pixel size, window fills the width, content centred */
+  #frame.fixed { display:flex; flex-direction:column; justify-content:center; overflow:hidden; min-width:0; }
+  #frame.fixed .window { min-width:0; width:100%; }
+  #frame.fixed pre { overflow:hidden; }
+  #frame.fixed .footer { min-height:0; }
+  .note { font-family:var(--font-mono); font-size:12px; color:var(--yellow); min-height:1.2em; }
+  .window { background:var(--black); border:1px solid var(--border-secondary); border-radius:calc(12px*var(--k)); box-shadow:0 24px 64px rgba(26,25,18,.45); overflow:hidden; min-width:640px; }
+  .titlebar { display:flex; align-items:center; justify-content:space-between; gap:calc(24px*var(--k)); padding:calc(14px*var(--k)) calc(20px*var(--k)); border-bottom:1px solid var(--border-secondary); background:var(--grey-900); }
+  .dots { display:flex; gap:calc(8px*var(--k)); }
+  .dots i { width:calc(10px*var(--k)); height:calc(10px*var(--k)); border-radius:50%; background:var(--grey-700); display:block; }
   .dots i:first-child { background:var(--red); }
   .file { color:var(--text-tertiary); }
   .lang { color:var(--yellow); }
-  pre { margin:0; padding:24px 28px 28px; font-family:var(--font-mono); font-size:14px; line-height:1.6; color:var(--text-primary); tab-size:2; }
+  pre { margin:0; padding:calc(24px*var(--k)) calc(28px*var(--k)) calc(28px*var(--k)); font-family:var(--font-mono); font-size:calc(14px*var(--k)); line-height:1.6; color:var(--text-primary); tab-size:2; }
   .ln { display:inline-block; width:2.5ch; margin-right:2ch; text-align:right; color:var(--grey-600); user-select:none; }
   .k { color:var(--red); }          /* keywords */
   .c { color:var(--grey-500); font-style:italic; } /* comments */
@@ -61,15 +69,16 @@
   .m { color:var(--pale-blue); }     /* method calls */
   .n { color:var(--grey-200); }
 
-  .footer { display:flex; justify-content:flex-end; margin-top:28px; min-height:44px; }
+  .footer { display:flex; justify-content:flex-end; margin-top:calc(28px*var(--k)); min-height:calc(44px*var(--k)); }
+  #frame .titlebar .eyebrow { font-size:calc(12px*var(--k)); }
   .footer[hidden], .wm[hidden] { display:none; }
   .window { position:relative; }
-  .wm { display:flex; align-items:center; gap:14px; color:var(--grey-100); }
-  .wm .url { font-size:12px; opacity:.9; }
-  .wm.inside { position:absolute; right:22px; bottom:20px; opacity:.45; }
-  .wm.inside .mark { height:32px; }
+  .wm { display:flex; align-items:center; gap:calc(14px*var(--k)); color:var(--grey-100); }
+  .wm .url { font-size:calc(12px*var(--k)); opacity:.9; }
+  .wm.inside { position:absolute; right:calc(22px*var(--k)); bottom:calc(20px*var(--k)); opacity:.45; }
+  .wm.inside .mark { height:calc(32px*var(--k)); }
   .wm.on-light { color:var(--black); }
-  .mark { height:44px; width:auto; display:block; opacity:.9; }
+  .mark { height:calc(44px*var(--k)); width:auto; display:block; opacity:.9; }
   .mark.on-light { filter:brightness(0); opacity:.85; } /* Black on light stages, Grey 100 on dark ones */
 
   @media (max-width:820px) {
@@ -93,6 +102,16 @@
       <div class="swatches" id="swatches"></div>
     </div>
     <div>
+      <span class="eyebrow">Shape</span>
+      <div class="seg" role="group" aria-label="Shape" id="shapes"></div>
+      <div class="row" id="shapesize" style="margin-top:8px"></div>
+    </div>
+    <div>
+      <span class="eyebrow">Text size</span>
+      <input type="range" id="tsize" min="12" max="48" value="14" aria-label="Text size">
+      <div class="row"><span>12</span><span id="tsizev">14px</span><span>48</span></div>
+    </div>
+    <div>
       <span class="eyebrow">Padding</span>
       <input type="range" id="pad" min="16" max="128" value="64" aria-label="Padding">
       <div class="row"><span>16</span><span id="padv">64px</span><span>128</span></div>
@@ -112,11 +131,12 @@
         <button type="button" class="btn ghost" id="posin" aria-pressed="false">Inside</button>
       </div>
     </div>
+    <div class="note" id="note" role="status"></div>
     <button class="btn" id="export" type="button">Export PNG</button>
   </aside>
 
   <main class="preview">
-    <div id="frame">
+    <div id="scaler"><div id="frame">
       <div class="window">
         <div class="titlebar">
           <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -126,7 +146,7 @@
         <pre id="code" aria-label="Code"></pre>
       </div>
       <div class="footer" id="footer"><div class="wm" id="wm"><span class="eyebrow url">__URL__</span><img class="mark" id="mark" src="__LOGO__" alt="Logomark"></div></div>
-    </div>
+    </div></div>
   </main>
 </div>
 
@@ -211,7 +231,54 @@ BG.forEach(([name, hex, isLight], i) => {
 
 const frame = document.getElementById("frame");
 const pad = document.getElementById("pad"), padv = document.getElementById("padv");
-pad.oninput = () => { frame.style.padding = pad.value + "px"; padv.textContent = pad.value + "px"; };
+// Shapes: null size = fit the code; otherwise an exact pixel size for the exported PNG
+const SHAPES = [["Fit", null], ["4:5", [1080, 1350]], ["1:1", [1080, 1080]], ["Wide", [1600, 900]]];
+const scaler = document.getElementById("scaler"), preview = document.querySelector(".preview");
+const tsize = document.getElementById("tsize"), tsizev = document.getElementById("tsizev");
+const note = document.getElementById("note"), shapesEl = document.getElementById("shapes");
+let shape = SHAPES[0][1];
+
+function applyLayout() {
+  document.documentElement.style.setProperty("--k", tsize.value / 14);
+  tsizev.textContent = tsize.value + "px";
+  frame.style.padding = pad.value + "px"; padv.textContent = pad.value + "px";
+  frame.classList.toggle("fixed", !!shape);
+  frame.style.width = shape ? shape[0] + "px" : "";
+  frame.style.height = shape ? shape[1] + "px" : "";
+  // Preview only: shrink a fixed frame to fit the page. The export ignores this scale.
+  let scale = 1;
+  if (shape) {
+    const narrow = window.matchMedia("(max-width:820px)").matches;
+    const availW = preview.clientWidth - (narrow ? 32 : 64), availH = innerHeight - 64;
+    scale = Math.min(1, availW / shape[0], narrow ? Infinity : availH / shape[1]);
+  }
+  scaler.style.transform = scale === 1 ? "" : `scale(${scale})`;
+  scaler.style.marginRight = shape ? -shape[0] * (1 - scale) + "px" : "";
+  scaler.style.marginBottom = shape ? -shape[1] * (1 - scale) + "px" : "";
+  document.getElementById("shapesize").innerHTML = shape ? `<span>${shape[0]} × ${shape[1]} px</span><span>preview ${Math.round(scale * 100)}%</span>` : "<span>Sized to the code</span>";
+  requestAnimationFrame(() => {
+    const win = document.querySelector(".window");
+    const clipped = shape && (frame.scrollHeight > frame.clientHeight + 1 || code.scrollWidth > code.clientWidth + 1 || win.scrollWidth > win.clientWidth + 1);
+    note.textContent = clipped ? "Code is clipped. Lower the text size or padding." : "";
+  });
+}
+function setShape(entry, button) {
+  shape = entry[1];
+  shapesEl.querySelectorAll(".btn").forEach(b => b.setAttribute("aria-pressed", b === button));
+  // Sensible defaults for the shape; the sliders still override them
+  tsize.value = shape ? Math.round(shape[0] / 38) : 14;
+  pad.value = shape ? Math.round(shape[0] / 15) : 64;
+  applyLayout();
+}
+SHAPES.forEach((entry, i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "btn ghost"; b.textContent = entry[0]; b.setAttribute("aria-pressed", i === 0);
+  b.onclick = () => setShape(entry, b);
+  shapesEl.appendChild(b);
+});
+pad.oninput = tsize.oninput = applyLayout;
+addEventListener("resize", applyLayout);
+applyLayout();
 
 const lnbtn = document.getElementById("lnbtn");
 lnbtn.onclick = () => {
@@ -234,9 +301,11 @@ posin.onclick = () => setPos(true);
 
 document.getElementById("export").onclick = async () => {
   try {
-    const url = await htmlToImage.toPng(frame, { pixelRatio: 2 });
+    const url = await htmlToImage.toPng(frame, shape
+      ? { pixelRatio: 1, width: shape[0], height: shape[1] }
+      : { pixelRatio: 2 });
     const a = document.createElement("a");
-    a.download = "code-snippet.png"; a.href = url; a.click();
+    a.download = "code-snippet" + (shape ? `-${shape[0]}x${shape[1]}` : "") + ".png"; a.href = url; a.click();
   } catch (e) { console.error(e); alert("Export failed: " + e.message); }
 };
 </script>

@@ -30,11 +30,20 @@ Builds one self-contained HTML page that shows code in a dark window on a brand-
    | `--open` | off | Open in the default browser |
 
 4. **Check it.** Take a headless screenshot, or open the page, and read it before reporting back. Look at line wrapping, the title-bar path, and the watermark on the default background.
-5. **Tell the user** where the file is and that **Export PNG** saves a 2x image.
+5. **Tell the user** where the file is and that **Export PNG** saves the image: 2x for the Fit shape, exact pixels for the fixed shapes.
 
 ## Controls in the page
 
-Background swatches (Red, Yellow, Pale Blue, Purple, Grey 100, Black), padding slider, line numbers on/off, watermark on/off, and watermark placement (outside the window or inside its bottom-right corner). On light backgrounds an outside watermark turns black.
+Background swatches (Red, Yellow, Pale Blue, Purple, Grey 100, Black), shape, text size, padding, line numbers on/off, watermark on/off, and watermark placement (outside the window or inside its bottom-right corner). On light backgrounds an outside watermark turns black.
+
+| Shape | Export size | Use |
+| --- | --- | --- |
+| Fit | sized to the code, 2x | Default; blog or a quick share |
+| 4:5 | 1080 × 1350 | Instagram carousel slide |
+| 1:1 | 1080 × 1080 | Square posts |
+| Wide | 1600 × 900 | X and LinkedIn link images |
+
+Picking a fixed shape sets a text size and padding that read well at that width; the sliders still override them. When the code does not fit the frame, the page shows "Code is clipped" and the export would cut it off. Shorten the snippet or lower the text size before exporting. Wide fits only short snippets, roughly 6 lines.
 
 ## Serving it to another device (optional)
 
