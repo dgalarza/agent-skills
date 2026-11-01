@@ -1,0 +1,4 @@
+interface:
+  display_name: "Webhook Receiver"
+  short_description: "Verified, idempotent, async webhook handling"
+  default_prompt: "Use $webhook-receiver to design or review this inbound webhook endpoint so it verifies, stores, enqueues, and acknowledges."

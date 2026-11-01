@@ -5,6 +5,12 @@ All notable changes to this repository will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Plugin and marketplace versions use calendar versioning, `YYYY.MM.PATCH` (example `2026.10.0`). Git release tags stay `YYYY.MM.DD`.
 
+## [2026.11.0] — 2026-11-01
+
+### Added
+- **webhook-receiver** in `engineering-skills`: design, implement, or review inbound webhook handling that verifies, persists with dedupe, enqueues IDs, and acknowledges, then dispatches idempotent handlers in a worker. Framework-agnostic, with verification, idempotency, pseudocode, and Rails references.
+- `engineering-skills` and the marketplace are `2026.11.0`.
+
 ## [2026.10.1] — 2026-10-19
 
 ### Fixed
