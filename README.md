@@ -54,6 +54,7 @@ npx skills add dgalarza/agent-skills --skill tdd -a codex
 | [conventional-comments](skills/conventional-comments/SKILL.md) | Review comments in the Conventional Comments format |
 | [conventional-commits](skills/conventional-commits/SKILL.md) | Commit messages in the Conventional Commits format |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor, one behavior at a time, with the project's own test command |
+| [webhook-receiver](skills/webhook-receiver/SKILL.md) | Verified, idempotent, asynchronous webhook handling. Framework-agnostic, with a Rails reference |
 
 The bundle manifest is [plugins/engineering-skills](plugins/engineering-skills/README.md).
 

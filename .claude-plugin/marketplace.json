@@ -1,6 +1,6 @@
 {
   "name": "dgalarza-agent-skills",
-  "version": "2026.10.1",
+  "version": "2026.11.0",
   "description": "Agent skills for Claude Code, Cursor, Codex, and other coding agents: codebase assessment, agent-ready scaffolding, and engineering workflows.",
   "owner": {
     "name": "Damian Galarza",
@@ -22,8 +22,8 @@
     {
       "name": "engineering-skills",
       "source": "./plugins/engineering-skills",
-      "description": "Engineering workflow skills: team-code-review, stacked-prs, conventional-comments, conventional-commits, and tdd.",
-      "version": "2026.10.1"
+      "description": "Engineering workflow skills: team-code-review, stacked-prs, conventional-comments, conventional-commits, tdd, and webhook-receiver.",
+      "version": "2026.11.0"
     }
   ],
   "renames": {

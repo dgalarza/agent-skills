@@ -38,7 +38,7 @@ Three plugins:
 |--------|--------|
 | `codebase-readiness` | assessment |
 | `agent-ready` | scaffold, quality gates, migrate, audit |
-| `engineering-skills` | team-code-review, stacked-prs, conventional-comments, conventional-commits, tdd |
+| `engineering-skills` | team-code-review, stacked-prs, conventional-comments, conventional-commits, tdd, webhook-receiver |
 
 `buffer` and `herdr-code-review` are skills with no plugin entry. `npx skills` discovers them from `skills/`.
 
