@@ -10,6 +10,7 @@ One Claude Code plugin for the day-to-day engineering workflow:
 | [conventional-commits](../../skills/conventional-commits/SKILL.md) | Write commits that follow [Conventional Commits](https://www.conventionalcommits.org/) |
 | [tdd](../../skills/tdd/SKILL.md) | Red-green-refactor, one behavior at a time, using the project's own test command |
 | [webhook-receiver](../../skills/webhook-receiver/SKILL.md) | Design or review inbound webhooks that verify, persist with dedupe, enqueue, and acknowledge |
+| [legacy-code-protocol](../../skills/legacy-code-protocol/SKILL.md) | Legacy code protocol: survey the area, plan stacked PRs and tickets, pin behavior with characterization tests, change test-first, replace, review |
 
 `tdd` replaces the old `tdd-workflow` plugin. It has no prompt hook. `team-code-review` replaces parallel code review: the coordinating agent verifies each finding, and security review is one of the specialist lenses.
 
