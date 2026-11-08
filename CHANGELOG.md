@@ -9,6 +9,7 @@ Plugin and marketplace versions use calendar versioning, `YYYY.MM.PATCH` (exampl
 
 ### Added
 - **webhook-receiver** in `engineering-skills`: design, implement, or review inbound webhook handling that verifies, persists with dedupe, enqueues IDs, and acknowledges, then dispatches idempotent handlers in a worker. Framework-agnostic, with verification, idempotency, pseudocode, and Rails references.
+- **legacy-code-protocol** in `engineering-skills`: work in untested code through six modes. Survey maps structure, coupling, coverage, and hotspots. Plan sequences seams, characterization tests, the change, and refactoring into stacked PRs and tickets. Pin, change, replace, and review apply the method. Each mode promotes verified findings into the repository's docs, using the `agent-ready` layout when none exists. Based on Michael Feathers' *Working Effectively with Legacy Code*.
 - `engineering-skills` and the marketplace are `2026.11.0`.
 
 ## [2026.10.1] — 2026-10-19

@@ -1,7 +1,7 @@
 {
   "name": "engineering-skills",
   "version": "2026.11.0",
-  "description": "Engineering workflow skills for code review, stacked pull requests, conventional comments, conventional commits, test-driven development, and webhook receivers.",
+  "description": "Engineering workflow skills for code review, stacked pull requests, conventional comments, conventional commits, test-driven development, webhook receivers, and changing legacy code.",
   "author": {
     "name": "Damian Galarza",
     "url": "https://www.damiangalarza.com"
@@ -15,6 +15,8 @@
     "conventional-comments",
     "tdd",
     "engineering",
-    "webhooks"
+    "webhooks",
+    "legacy-code",
+    "characterization-tests"
   ]
 }

@@ -15,7 +15,7 @@ Plugins:
 |--------|----------------|------------------|
 | Codebase Readiness | `codebase-readiness` | 8-dimension assessment. Get it from [the landing page](https://www.damiangalarza.com/codebase-readiness/). |
 | Agent Ready | `agent-ready` | Documentation scaffold, quality gates, migrate, and audit. Get it from [the landing page](https://www.damiangalarza.com/agent-ready/). |
-| Engineering skills | `engineering-skills` | `team-code-review`, `stacked-prs`, `conventional-comments`, `conventional-commits`, `tdd`, `webhook-receiver` |
+| Engineering skills | `engineering-skills` | `team-code-review`, `stacked-prs`, `conventional-comments`, `conventional-commits`, `tdd`, `webhook-receiver`, `legacy-code-protocol` |
 
 ```bash
 /plugin install engineering-skills@dgalarza-agent-skills
@@ -54,6 +54,7 @@ Canonical files are `skills/<name>/SKILL.md`. Plugins symlink at those directori
 | `conventional-commits` | Structured commit messages |
 | `tdd` | Red-green-refactor, one behavior at a time. No install hook |
 | `webhook-receiver` | Verified, idempotent, asynchronous webhook handling |
+| `legacy-code-protocol` | Survey, plan, pin, change, replace, and review modes for untested code |
 
 `herdr-code-review` is an engineering skill outside the bundle (npx only):
 

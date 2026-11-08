@@ -22,7 +22,7 @@
     {
       "name": "engineering-skills",
       "source": "./plugins/engineering-skills",
-      "description": "Engineering workflow skills: team-code-review, stacked-prs, conventional-comments, conventional-commits, tdd, and webhook-receiver.",
+      "description": "Engineering workflow skills: team-code-review, stacked-prs, conventional-comments, conventional-commits, tdd, webhook-receiver, and legacy-code-protocol.",
       "version": "2026.11.0"
     }
   ],
