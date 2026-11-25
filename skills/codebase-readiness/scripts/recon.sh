@@ -74,7 +74,7 @@ find . \( -path "*/adr/*.md" -o -path "*/adrs/*.md" -o -path "*/decisions/*.md" 
 echo ""
 echo "=== LINTING/FORMATTING ==="
 linters=""
-for f in .eslintrc* eslint.config.* biome.json .oxlintrc* .rubocop.yml .flake8 ruff.toml .pylintrc .golangci.yml .prettierrc* .scalafmt.conf .scalafix.conf clippy.toml rustfmt.toml phpstan.neon phpstan.neon.dist pint.json .php-cs-fixer.php; do
+for f in .eslintrc* eslint.config.* biome.json biome.jsonc .oxlintrc* .rubocop.yml .flake8 ruff.toml .pylintrc .golangci.yml .prettierrc* .scalafmt.conf .scalafix.conf clippy.toml rustfmt.toml phpstan.neon phpstan.neon.dist pint.json .php-cs-fixer.php; do
   # Use compgen to handle globs that don't match
   compgen -G "$f" > /dev/null 2>&1 && linters="$linters $f"
 done
