@@ -67,7 +67,45 @@ The first integer in a message is tracked as a metric (a complexity value, a dup
 
 Each recipe emits the contract format. Test every command by hand before writing it into the config.
 
-**TypeScript / JavaScript**
+**TypeScript / JavaScript -- default: [fallow](https://github.com/fallow-rs/fallow)**
+
+Fallow is one Rust binary, distributed on npm, that covers all three properties. It reports complexity (`fallow health`), duplication (`fallow dupes`), and dead code (`fallow dead-code`: unused files, exports, types, members, and dependencies). It needs no TypeScript compiler, and its 100+ framework plugins find entry points without configuration. Use it for TS/JS projects unless the project already gates a property with another tool; see "Existing TS/JS tools" below.
+
+Use Option B with the shipped adapter, `assets/fallow-adapter.mjs`, installed as `scripts/fallow-adapter.mjs`. The adapter runs fallow with `--format json`, emits the contract's jsonl, exits 0 when fallow's exit 1 only means "findings", and exits 2 on a real tool failure (exit >= 2, unparseable output).
+
+```bash
+npm install --save-dev fallow            # Node.js 22+; pin it so CI and local runs match
+cp "<skill-dir>/assets/fallow-adapter.mjs" scripts/fallow-adapter.mjs
+```
+
+`.fallowrc.json`. Write it **before** saving the baseline. Changing entry points, ignores, or rules afterwards changes the findings and leaves stale baseline entries.
+
+```json
+{
+  "$schema": "./node_modules/fallow/schema.json",
+  "ignorePatterns": ["scripts/fallow-adapter.mjs"]
+}
+```
+
+Add `entry`, `ignoreDependencies`, `health.maxCyclomatic` (default 20), `health.maxCognitive` (default 15), or `duplicates.minTokens` (default 50) only when the defaults are wrong for the project. `npx fallow recommend` proposes a config without writing files. Rules set to `"warn"` in `rules` are reported by fallow but do not gate, because the adapter keeps only error-severity findings.
+
+`.quality-gate.json` checks:
+
+```json
+"complexity":  { "command": "node scripts/fallow-adapter.mjs complexity",  "format": "jsonl" },
+"duplication": { "command": "node scripts/fallow-adapter.mjs duplication", "format": "jsonl" },
+"dead-code":   { "command": "node scripts/fallow-adapter.mjs dead-code",   "format": "jsonl", "metric": false }
+```
+
+Extra adapter arguments pass through to fallow, for example `--production` or `--workspace <name>` for one monorepo package. The adapter emits one finding per function per exceeded dimension (`complexity-cyclomatic`, `complexity-cognitive`), with the measured value as the tracked metric. It emits one finding per clone instance with the duplicated line count as the metric, and one finding per dead-code item keyed by name, not line.
+
+Why Option B and not fallow's native baselines: fallow has `--save-baseline`, `--fail-on-stale-baseline`, `--fail-on-baseline-growth`, and `fallow baselines prune`. Tested on fallow 3.48.0, they cover new findings, line moves, stale entries, and pruning. They do not fail when a baselined function gets more complex, because health baselines match by file or function and category, not by value. Duplication also gates only with `--fail-on-issues`. `fallow audit` scopes to changed files and passed both the worsened-function and new-duplication cases in testing. Use `audit` as an agent's local review aid, not as the blocking gate.
+
+Leave CRAP out of the gate (`health.maxCrap`) unless the project passes `--coverage`. Without coverage the score is a static estimate.
+
+`npx fallow agent install` (Claude Code, Codex, Cursor) writes an AGENTS.md task map, installs fallow skills, registers an MCP server, and adds git commit/push hooks. Offer it only as an optional extra, after showing its `--dry-run` output, because it edits AGENTS.md and hooks that this skill also manages.
+
+**Existing TS/JS tools.** When the project already gates one property with ESLint complexity, jscpd, or knip, keep that tool for that property and use fallow only for the uncovered ones. If the user wants one analyzer, `npx fallow migrate` converts knip and jscpd configs. Run both tools until their findings agree, then remove the old one in its own PR. The recipes for those tools:
 
 ```bash
 # complexity (unix): ESLint's own rule, threshold from the project's config
@@ -148,10 +186,11 @@ Wire it into the project's test command so the gate is exercised on every CI run
 
 ## Debt Fixture Snippets
 
-One function over a threshold of 10, for the test template's "new debt fails" case:
+One function over a threshold of 10, for the test template's "new debt fails" case. Fallow's default cyclomatic threshold is 20, so a fallow fixture needs at least 21 branches. This one has cyclomatic 22 and cognitive 21:
 
 ```
-TypeScript : export function qgFixture(n: number) { if (n===1) return 1; if (n===2) return 2; if (n===3) return 3; if (n===4) return 4; if (n===5) return 5; if (n===6) return 6; if (n===7) return 7; if (n===8) return 8; if (n===9) return 9; if (n===10) return 10; if (n===11) return 11; return 0; }
+TS fallow  : export function qgFixture(n: number) { if (n===1) return 1; if (n===2) return 2; if (n===3) return 3; if (n===4) return 4; if (n===5) return 5; if (n===6) return 6; if (n===7) return 7; if (n===8) return 8; if (n===9) return 9; if (n===10) return 10; if (n===11) return 11; if (n===12) return 12; if (n===13) return 13; if (n===14) return 14; if (n===15) return 15; if (n===16) return 16; if (n===17) return 17; if (n===18) return 18; if (n===19) return 19; if (n===20) return 20; if (n===21) return 21; return 0; }
+TS eslint  : export function qgFixture(n: number) { if (n===1) return 1; if (n===2) return 2; if (n===3) return 3; if (n===4) return 4; if (n===5) return 5; if (n===6) return 6; if (n===7) return 7; if (n===8) return 8; if (n===9) return 9; if (n===10) return 10; if (n===11) return 11; return 0; }
 Ruby       : def qg_fixture(n) = n == 1 ? 1 : n == 2 ? 2 : n == 3 ? 3 : n == 4 ? 4 : n == 5 ? 5 : n == 6 ? 6 : n == 7 ? 7 : n == 8 ? 8 : n == 9 ? 9 : n == 10 ? 10 : n == 11 ? 11 : 0
 Python     : def qg_fixture(n):\n    if n == 1: return 1\n    if n == 2: return 2\n    ... (12 branches)
 Go         : func qgFixture(n int) int { switch n { case 1: return 1; ... case 12: return 12 }; return 0 }

@@ -50,12 +50,13 @@ Each dimension scores a distinct slice. Do not award credit for the same fact in
 
 ```bash
 # Tool configuration (which structural properties are covered)
-grep -rEl "complexity|max-complexity|cognitive|C901|Metrics/(Cyclomatic|Perceived)Complexity|gocyclo|gocognit|cyclomatic" \
+# fallow (TS/JS) covers complexity, duplication, and dead code in one tool
+grep -rEl "fallow|complexity|max-complexity|cognitive|C901|Metrics/(Cyclomatic|Perceived)Complexity|gocyclo|gocognit|cyclomatic" \
   .eslintrc* eslint.config.* biome.json .rubocop.yml pyproject.toml ruff.toml setup.cfg .golangci.yml \
-  phpmd*.xml detekt*.yml pmd*.xml sonar-project.properties 2>/dev/null
-grep -rEl "jscpd|flay|duplicate-code|cpd|phpcpd|dupl|simian" package.json Gemfile pyproject.toml .golangci.yml .pylintrc pmd*.xml composer.json .jscpd.json 2>/dev/null
-grep -rEl "knip|ts-prune|ts-unused-exports|unused-imports|vulture|debride|deadcode|unused|cargo-udeps|cargo-machete|UnusedPrivateMember|unusedFunction" \
-  package.json knip.json knip.jsonc Gemfile pyproject.toml .golangci.yml Cargo.toml detekt*.yml phpstan.neon* 2>/dev/null
+  phpmd*.xml detekt*.yml pmd*.xml sonar-project.properties package.json .fallowrc.json* fallow.toml .fallow.toml 2>/dev/null
+grep -rEl "fallow|jscpd|flay|duplicate-code|cpd|phpcpd|dupl|simian" package.json Gemfile pyproject.toml .golangci.yml .pylintrc pmd*.xml composer.json .jscpd.json .fallowrc.json* fallow.toml .fallow.toml 2>/dev/null
+grep -rEl "fallow|knip|ts-prune|ts-unused-exports|unused-imports|vulture|debride|deadcode|unused|cargo-udeps|cargo-machete|UnusedPrivateMember|unusedFunction" \
+  package.json knip.json knip.jsonc .fallowrc.json* fallow.toml .fallow.toml Gemfile pyproject.toml .golangci.yml Cargo.toml detekt*.yml phpstan.neon* 2>/dev/null
 
 # Baseline artifacts and their size / staleness
 ls .rubocop_todo.yml phpstan-baseline.neon phpstan-baseline.php detekt-baseline.xml .quality-baseline.json .betterer.results \

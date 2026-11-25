@@ -359,13 +359,14 @@ Never run this mode to make a failing gate pass. If a gate exists and `check` is
 ```bash
 # Language and existing analyzers
 ls package.json Gemfile pyproject.toml requirements*.txt go.mod Cargo.toml composer.json pom.xml build.gradle* build.sbt 2>/dev/null
-ls .eslintrc* eslint.config.* biome.json .rubocop.yml .rubocop_todo.yml ruff.toml pyproject.toml .pylintrc .golangci.yml phpstan.neon* phpmd*.xml detekt*.yml pmd*.xml knip.json* .jscpd.json 2>/dev/null
-grep -E '"(lint|typecheck|test|quality|gate)"' package.json 2>/dev/null
+ls .eslintrc* eslint.config.* biome.json .rubocop.yml .rubocop_todo.yml ruff.toml pyproject.toml .pylintrc .golangci.yml phpstan.neon* phpmd*.xml detekt*.yml pmd*.xml knip.json* .jscpd.json .fallowrc.json .fallowrc.jsonc fallow.toml .fallow.toml 2>/dev/null
+grep -E '"(lint|typecheck|test|quality|gate)"|"(fallow|knip|jscpd)"' package.json 2>/dev/null
+node --version 2>/dev/null
 
 # Existing gate artifacts
 ls .quality-gate.json .quality-baseline.json scripts/quality-gate.py scripts/quality-gate-test.sh docs/guides/quality-gates.md 2>/dev/null
 grep -E "new-from-rev|new-from-merge-base|reportUnmatchedIgnoredErrors|baseline" .golangci.yml phpstan.neon* detekt*.yml 2>/dev/null
-grep -rlE "complexity|jscpd|flay|knip|vulture|debride|gocyclo|dupl|phpmd|detekt|quality-gate" .github/workflows .gitlab-ci.yml .circleci 2>/dev/null
+grep -rlE "complexity|jscpd|flay|knip|fallow|vulture|debride|gocyclo|dupl|phpmd|detekt|quality-gate" .github/workflows .gitlab-ci.yml .circleci 2>/dev/null
 
 # Hook frameworks and CODEOWNERS
 ls .husky lefthook.yml .pre-commit-config.yaml .github/CODEOWNERS CODEOWNERS 2>/dev/null
@@ -380,7 +381,7 @@ If a partial gate already exists, extend it toward the contract rather than repl
 
 ### Step 2: Choose Checks
 
-Pick three checks -- complexity, duplication, dead code -- from the language's recipes. Use the thresholds the project already configures where they exist; otherwise use the tool's defaults. Do not introduce a new analyzer when the project already runs one that covers the property. Skip a property only when no reliable tool exists for the stack, and say so.
+Pick three checks -- complexity, duplication, dead code -- from the language's recipes. For TypeScript and JavaScript, the default is fallow for all three through `assets/fallow-adapter.mjs`; keep an existing ESLint complexity, jscpd, or knip gate for the property it already covers (see the TS/JS recipe). Use the thresholds the project already configures where they exist; otherwise use the tool's defaults. Do not introduce a new analyzer when the project already runs one that covers the property. Skip a property only when no reliable tool exists for the stack, and say so.
 
 **Run every candidate command by hand** and confirm it emits the contract format (one finding per line, `unix` or `jsonl`). Fix the adapter until it does.
 
@@ -393,6 +394,15 @@ mkdir -p scripts
 cp "<skill-dir>/assets/quality-gate.py" scripts/quality-gate.py
 chmod +x scripts/quality-gate.py
 ```
+
+For TypeScript and JavaScript with fallow:
+
+```bash
+npm install --save-dev fallow   # or the project's package manager; needs Node.js 22+
+cp "<skill-dir>/assets/fallow-adapter.mjs" scripts/fallow-adapter.mjs
+```
+
+Write `.fallowrc.json` with `scripts/fallow-adapter.mjs` in `ignorePatterns`, plus any `entry` or threshold settings the project needs, before Step 4. A config change after baselining leaves stale entries.
 
 Write `.quality-gate.json` with the confirmed checks, `base_ref` set to the repository's default branch (`origin/main` or `origin/master`), and `baseline` at `.quality-baseline.json`. Add `__pycache__/` to `.gitignore` if it is not already ignored.
 
