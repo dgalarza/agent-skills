@@ -35,6 +35,7 @@ Determine which mode to run based on user intent:
 | Full documentation setup | **scaffold** | "make this agent-ready", "full setup", "scaffold docs" |
 | Generate architecture doc | **architecture** | "create ARCHITECTURE.md", "architecture doc", "codemap" |
 | Create/refactor AGENTS.md | **agents-md** | "set up AGENTS.md", "create AGENTS.md", "refactor AGENTS.md" |
+| Set up lint and format for a TS/JS repo that has neither | **lint-format** | "set up linting", "add a formatter", "set up Biome" |
 | Install regression-aware quality gates | **quality-gates** | "set up quality gates", "block new complexity", "baseline our tech debt", "stop agents adding dead code", "regression gate" |
 | Upgrade a prior agent-ready scaffold | **migrate** | "migrate agent-ready", "upgrade our agent docs", "modernize agent-ready" |
 | Check existing artifacts | **audit** | "audit docs", "are my docs up to date", "check agent readiness" |
@@ -118,7 +119,8 @@ Present a clear inventory to the user:
 - AGENTS.md (also recognized by Claude Code 2.1.277+; no CLAUDE.md alias needed)
 - docs/adr/ (only when a qualifying decision is made; no starter ADR)
 - Documentation check: scripts/docs-check.py, CI job, and a Definition of Done directive
-- Quality gate: scripts/quality-gate.py, .quality-gate.json, CI job, docs/guides/quality-gates.md, gate self-test (baseline created only after review -- see Step 7)
+- Quality gate: scripts/quality-gate.py, .quality-gate.json, CI job, docs/guides/quality-gates.md, gate self-test (baseline created only after review -- see Step 8)
+- Lint and format (TS/JS repos with no linter and no formatter only): Biome, one formatting commit, reasoned suppressions for legacy lint debt, CI step
 ```
 
 ### Step 3: Create docs/ Structure
@@ -168,17 +170,21 @@ Using the discovered model/entity names and README context:
 
 Write the result to `docs/DOMAIN.md`. Link `CONTEXT.md` if it exists, but do not create it speculatively. Recommend a domain-modeling workflow when the team needs to resolve new canonical terms.
 
-### Step 6: Generate AGENTS.md
+### Step 6: Set Up Lint and Format (TS/JS only)
+
+If reconnaissance found a `package.json` and no linter or formatter, execute the **lint-format** mode logic (see below) inline, so AGENTS.md can name the lint command. Skip this step for any other repository, including one that already has ESLint or Prettier.
+
+### Step 7: Generate AGENTS.md
 
 Execute the **agents-md** mode logic (see below) inline. Do not launch a separate agent.
 
-### Step 7: Install Quality Gates
+### Step 8: Install Quality Gates
 
-Execute the **quality-gates** mode logic (see below) inline. The Definition of Done written in Step 6 must reference the gate's `check` command, so if Step 6 ran before the command name was known, update AGENTS.md now.
+Execute the **quality-gates** mode logic (see below) inline. The Definition of Done written in Step 7 must reference the gate's `check` command, so if Step 7 ran before the command name was known, update AGENTS.md now.
 
 Do not skip the baseline review protocol to keep scaffold moving: if the user is not ready to review the baseline, install the engine, config, CI, docs, and tests, leave the baseline uncreated, and record in the summary that `check` will fail until a baseline is created and approved.
 
-### Step 8: Summary
+### Step 9: Summary
 
 Present everything created with file paths, and suggest next steps:
 - Review `docs/DOMAIN.md` and verify every inferred workflow or relationship
@@ -345,6 +351,20 @@ Claude Code supports AGENTS.md directly starting with version 2.1.277 ([announce
 ### Step 6: Present and Confirm
 
 Show the draft (or before/after diff for refactoring). Write AGENTS.md on confirmation.
+
+---
+
+## Mode: lint-format
+
+Set up linting and formatting for a TypeScript or JavaScript repository that has neither. Read `references/lint-format-biome.md` first; it holds the detection commands, config, rollout, and CI step.
+
+1. **Detect.** Run the detection commands from the reference. If any linter or formatter is configured (ESLint, Prettier, oxlint, dprint, or Biome), report what exists and stop. Do not add Biome next to it or replace it. Offer an ESLint or Prettier migration to Biome only when the user asks, as a separate PR.
+2. **Plan and confirm.** Show the dev dependency, the config, the formatting commit, the suppression pass, the scripts, and the CI step. Wait for explicit confirmation.
+3. **Install and configure.** Install `@biomejs/biome` pinned exactly, run `biome init`, set `vcs.defaultBranch`, and leave the complexity rule off, because fallow owns complexity in the quality gate.
+4. **Format once.** Commit the formatting change by itself and add its SHA to `.git-blame-ignore-revs`.
+5. **Handle legacy lint debt.** Present the remaining diagnostics and fix the cheap ones. After confirmation, run `biome lint --suppress --reason="..."` for the rest.
+6. **Wire commands and CI.** Add the `lint`, `lint:fix`, and `format` scripts, and add `biome ci --error-on-warnings --reporter=github` to CI.
+7. **Update AGENTS.md.** Put the lint command in the one-liners and the Definition of Done. Add two directives: remove a `biome-ignore` comment when Biome reports it unused, and never add one to get past CI.
 
 ---
 

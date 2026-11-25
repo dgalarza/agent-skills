@@ -25,9 +25,10 @@ These commands are the GitHub install path. The landing page is the supported wa
 
 | Mode | What it does | Example prompt |
 |------|-------------|----------------|
-| **scaffold** | Full setup: docs/ structure, ARCHITECTURE.md, AGENTS.md, documentation check, quality gate | "Make this codebase agent-ready" |
+| **scaffold** | Full setup: docs/ structure, ARCHITECTURE.md, AGENTS.md, documentation check, lint and format (TS/JS repos that have neither), quality gate | "Make this codebase agent-ready" |
 | **architecture** | Generate ARCHITECTURE.md from the actual codebase | "Create an ARCHITECTURE.md" |
 | **agents-md** | Create or refactor AGENTS.md for progressive disclosure | "Set up AGENTS.md" |
+| **lint-format** | Set up Biome for a TypeScript or JavaScript repo that has no linter and no formatter: one formatting commit, reasoned suppressions for legacy lint debt, CI. Never replaces ESLint or Prettier | "Set up linting" |
 | **quality-gates** | Install a regression-aware quality gate: native complexity, duplication, and dead-code checks, a reviewed baseline, merge-base-aware CI, docs, and tests | "Set up quality gates" |
 | **migrate** | Upgrade a legacy agent-ready scaffold to the current domain-context, ADR, and documentation-check contract | "Migrate our agent-ready docs" |
 | **audit** | Check existing agent-readiness artifacts and the quality gate for staleness, coherence, and governance | "Are my agent docs up to date?" |
