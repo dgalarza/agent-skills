@@ -89,12 +89,13 @@ echo "=== QUALITY GATES ==="
 # Regression-aware quality gate detection. The orchestrator turns this into a
 # Gate Maturity Level (L0-L4) using references/quality-gates.md.
 echo "-- structural tooling --"
-cfgs=".eslintrc* eslint.config.* biome.json .rubocop.yml pyproject.toml ruff.toml setup.cfg .pylintrc .golangci.yml phpmd*.xml phpstan.neon* detekt*.yml pmd*.xml sonar-project.properties package.json Gemfile Cargo.toml composer.json knip.json* .jscpd.json"
-cx=$(grep -lE "complexity|cognitive|C901|Metrics/(Cyclomatic|Perceived)Complexity|gocyclo|gocognit|CyclomaticComplexity" $cfgs 2>/dev/null | tr '\n' ' ')
+cfgs=".eslintrc* eslint.config.* biome.json .rubocop.yml pyproject.toml ruff.toml setup.cfg .pylintrc .golangci.yml phpmd*.xml phpstan.neon* detekt*.yml pmd*.xml sonar-project.properties package.json Gemfile Cargo.toml composer.json knip.json* .jscpd.json .fallowrc.json .fallowrc.jsonc fallow.toml .fallow.toml"
+# fallow covers all three properties, so a fallow dependency or config counts for each
+cx=$(grep -lE "fallow|complexity|cognitive|C901|Metrics/(Cyclomatic|Perceived)Complexity|gocyclo|gocognit|CyclomaticComplexity" $cfgs 2>/dev/null | tr '\n' ' ')
 echo "complexity: ${cx:-none}"
-dup=$(grep -lE "jscpd|flay|duplicate-code|\"cpd\"|phpcpd|dupl|simian" $cfgs 2>/dev/null | tr '\n' ' ')
+dup=$(grep -lE "fallow|jscpd|flay|duplicate-code|\"cpd\"|phpcpd|dupl|simian" $cfgs 2>/dev/null | tr '\n' ' ')
 echo "duplication: ${dup:-none}"
-dead=$(grep -lE "knip|ts-prune|ts-unused-exports|unused-imports|vulture|debride|deadcode|\bunused\b|cargo-udeps|cargo-machete|UnusedPrivateMember|UnusedPrivateMethod" $cfgs 2>/dev/null | tr '\n' ' ')
+dead=$(grep -lE "fallow|knip|ts-prune|ts-unused-exports|unused-imports|vulture|debride|deadcode|\bunused\b|cargo-udeps|cargo-machete|UnusedPrivateMember|UnusedPrivateMethod" $cfgs 2>/dev/null | tr '\n' ' ')
 echo "dead-code: ${dead:-none}"
 
 echo "-- baselines --"
@@ -112,7 +113,7 @@ grep -E '"reviewed"|"reason"' .quality-baseline.json 2>/dev/null | head -2 | sed
 
 echo "-- CI gate behaviour --"
 ci_paths=".github/workflows .gitlab-ci.yml .circleci .buildkite"
-gate_jobs=$(grep -rlE "complexity|jscpd|flay|knip|vulture|debride|gocyclo|dupl|phpmd|phpcpd|detekt|pmd|quality-gate|quality_gate" $ci_paths 2>/dev/null | tr '\n' ' ')
+gate_jobs=$(grep -rlE "complexity|jscpd|flay|knip|fallow|vulture|debride|gocyclo|dupl|phpmd|phpcpd|detekt|pmd|quality-gate|quality_gate" $ci_paths 2>/dev/null | tr '\n' ' ')
 echo "CI files running structural checks: ${gate_jobs:-none}"
 soft=$(grep -rnE "continue-on-error: *true|\|\| *true|allow_failure: *true|soft_fail" $ci_paths 2>/dev/null | wc -l | tr -d ' ')
 echo "soft-fail markers in CI: $soft"

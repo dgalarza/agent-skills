@@ -53,11 +53,12 @@ for dir in utils helpers common shared misc; do
 done
 
 # Structural quality gate coverage (see references/quality-gates.md; use the Gate Maturity Level from the snapshot)
-grep -rEl "complexity|cognitive|C901|Metrics/(Cyclomatic|Perceived)Complexity|gocyclo|gocognit" \
-  .eslintrc* eslint.config.* biome.json .rubocop.yml pyproject.toml ruff.toml .golangci.yml phpmd*.xml detekt*.yml pmd*.xml 2>/dev/null
-grep -rEl "jscpd|flay|duplicate-code|cpd|phpcpd|dupl" package.json Gemfile pyproject.toml .golangci.yml .pylintrc pmd*.xml composer.json .jscpd.json 2>/dev/null
-grep -rEl "knip|ts-prune|ts-unused-exports|vulture|debride|deadcode|unused|cargo-machete|UnusedPrivateMember" \
-  package.json knip.json* Gemfile pyproject.toml .golangci.yml Cargo.toml detekt*.yml phpstan.neon* 2>/dev/null
+# fallow (TS/JS) covers complexity, duplication, and dead code in one tool
+grep -rEl "fallow|complexity|cognitive|C901|Metrics/(Cyclomatic|Perceived)Complexity|gocyclo|gocognit" \
+  .eslintrc* eslint.config.* biome.json .rubocop.yml pyproject.toml ruff.toml .golangci.yml phpmd*.xml detekt*.yml pmd*.xml package.json .fallowrc.json* fallow.toml .fallow.toml 2>/dev/null
+grep -rEl "fallow|jscpd|flay|duplicate-code|cpd|phpcpd|dupl" package.json Gemfile pyproject.toml .golangci.yml .pylintrc pmd*.xml composer.json .jscpd.json .fallowrc.json* fallow.toml .fallow.toml 2>/dev/null
+grep -rEl "fallow|knip|ts-prune|ts-unused-exports|vulture|debride|deadcode|unused|cargo-machete|UnusedPrivateMember" \
+  package.json knip.json* .fallowrc.json* fallow.toml .fallow.toml Gemfile pyproject.toml .golangci.yml Cargo.toml detekt*.yml phpstan.neon* 2>/dev/null
 ```
 
 ## Scoring Bands

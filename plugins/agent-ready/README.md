@@ -38,7 +38,7 @@ Documentation tells an agent what good looks like. A quality gate stops it from 
 
 | Piece | Detail |
 |-------|--------|
-| Checks | The language's native tools. Native baseline or diff modes are used where they exist; otherwise a stdlib engine (`assets/quality-gate.py`) fingerprints findings so line-number churn does not look like new debt |
+| Checks | The language's native tools. Native baseline or diff modes are used where they exist; otherwise a stdlib engine (`assets/quality-gate.py`) fingerprints findings so line-number churn does not look like new debt. TypeScript and JavaScript default to [fallow](https://github.com/fallow-rs/fallow) for complexity, duplication, and dead code, through `assets/fallow-adapter.mjs` |
 | Commands | `report` / `check` / `baseline --prune`, identical locally and in CI |
 | Baseline | Created only with a written `--reason` and a human `--approve --reviewed-by`. `check` fails while it is unreviewed. Refused in CI. Stale entries fail until pruned |
 | CI | Merge-base-aware job that annotates findings on the pull request diff |
